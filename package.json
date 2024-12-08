@@ -1,0 +1,12 @@
+{
+  "name": "hono-rpc-perf-tips-example",
+  "private": true,
+  "scripts": {
+    "dev": "turbo dev"
+  },
+  "devDependencies": {
+    "turbo": "^2.1.2",
+    "typescript": "^5.7.2"
+  },
+  "packageManager": "pnpm@9.10.0"
+}

@@ -1,0 +1,27 @@
+{
+  "name": "@repo/api",
+  "version": "1.0.0",
+  "exports": {
+    "./hc": {
+      "import": {
+        "types": "./src/hc.ts",
+        "default": "./dist/hc.mjs"
+      }
+    }
+  },
+  "scripts": {
+    "dev": "pnpm --filter @repo/api --parallel \"/^dev:.*/\"",
+    "dev:tsup": "tsup --watch",
+    "dev:tsx": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.build.json"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.7",
+    "hono": "^4.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "tsup": "^8.3.5",
+    "tsx": "^4.19.2"
+  }
+}
