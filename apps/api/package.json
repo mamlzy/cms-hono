@@ -12,12 +12,14 @@
   "scripts": {
     "dev": "pnpm --filter @repo/api --parallel \"/^dev:.*/\"",
     "dev:tsup": "tsup --watch",
-    "dev:tsx": "tsx watch src/index.ts",
+    "dev:tsx": "tsx watch src/index.ts --clear-screen=false",
     "build": "tsc -p tsconfig.build.json"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.7",
-    "hono": "^4.6.1"
+    "date-fns": "^4.1.0",
+    "hono": "^4.6.1",
+    "nanoid": "^5.0.9"
   },
   "devDependencies": {
     "@types/node": "^22.10.1",
