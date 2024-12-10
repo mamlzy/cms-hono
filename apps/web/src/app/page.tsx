@@ -1,6 +1,7 @@
 'use client';
 
-import { useRef } from 'react';
+import { hc } from '@/lib/hono-client';
+import { useEffect, useRef,  } from 'react';
 
 export default function Home() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -30,6 +31,18 @@ export default function Home() {
       console.error('Error uploading files:', err);
     }
   };
+
+  useEffect(() => {
+    const getData = async () => {
+      const res = await hc.api.users.$get()
+      const data = await res.json()
+
+      console.log("data =>", data)
+
+    }
+
+    getData();
+  }, [])
 
   return (
     <div className=''>

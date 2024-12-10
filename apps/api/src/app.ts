@@ -10,8 +10,6 @@ app.use(logger());
 
 const routes = createRoutes(app);
 
-const port = 5000;
-
 type AppType = typeof routes;
 
 export { app, AppType };

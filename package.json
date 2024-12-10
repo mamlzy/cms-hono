@@ -2,7 +2,8 @@
   "name": "hono-rpc-perf-tips-example",
   "private": true,
   "scripts": {
-    "dev": "turbo dev"
+    "dev": "turbo dev",
+    "db:push": "turbo db:push"
   },
   "devDependencies": {
     "turbo": "^2.1.2",

@@ -16,6 +16,7 @@
     "build": "tsc -p tsconfig.build.json"
   },
   "dependencies": {
+    "@repo/db": "workspace:*",
     "@hono/node-server": "^1.13.7",
     "date-fns": "^4.1.0",
     "hono": "^4.6.1",
