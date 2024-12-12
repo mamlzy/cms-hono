@@ -1,0 +1,75 @@
+services:
+  cms-web:
+    container_name: cms-web
+    image: cms-web
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+    restart: always
+    ports:
+      - 5710:3000
+    environment:
+      - NODE_ENV=production
+    networks:
+      - cms-network
+    depends_on:
+      - cms-api
+
+  cms-api:
+    container_name: cms-api
+    image: cms-api
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+    restart: always
+    ports:
+      - 5711:5000
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - cms-api:/app/apps/api/public #! type volume
+    networks:
+      - cms-network
+    depends_on:
+      - cms-db
+      - cms-pgadmin
+
+  cms-db:
+    container_name: cms-db
+    image: postgres
+    restart: always
+    ports:
+      - "5712:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - cms-db:/var/lib/postgresql/data
+    networks:
+      - cms-network
+      
+  cms-pgadmin:
+    container_name: cms-pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "5713:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: secret
+      PGADMIN_CONFIG_WTF_CSRF_CHECK_DEFAULT: "False"
+    networks:
+      - cms-network
+
+networks:
+  cms-network:
+    name: cms-network
+    # external: true
+
+volumes:
+  cms-db:
+    name: cms-db
+  cms-pgadmin:
+    name: cms-pgadmin
+  cms-api:
+    name: cms-api

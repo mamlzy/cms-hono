@@ -2,10 +2,13 @@
   "name": "hono-rpc-perf-tips-example",
   "private": true,
   "scripts": {
+    "build": "turbo build",
     "dev": "turbo dev",
-    "db:push": "turbo db:push"
+    "db:push": "turbo db:push",
+    "prod:db:push": "turbo prod:db:push"
   },
   "devDependencies": {
+    "dotenv-cli": "^7.4.4",
     "turbo": "^2.1.2",
     "typescript": "^5.7.2"
   },

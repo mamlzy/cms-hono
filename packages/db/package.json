@@ -4,19 +4,23 @@
   "exports": {
     ".": {
       "types": "./src/index.ts",
-      "default": "./dist/index.mjs"
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
     },
     "./schema": {
       "types": "./src/schema/index.ts",
-      "default": "./dist/schema/index.mjs"
+      "require": "./dist/schema/index.js",
+      "import": "./dist/schema/index.mjs"
     },
     "./types": {
       "types": "./src/types/index.ts",
-      "default": "./dist/types/index.mjs"
+      "require": "./dist/types/index.js",
+      "import": "./dist/types/index.mjs"
     },
     "./constant": {
       "types": "./src/constant.ts",
-      "default": "./dist/constant.mjs"
+      "require": "./dist/constant.js",
+      "import": "./dist/constant.mjs"
     }
   },
   "scripts": {
@@ -26,10 +30,12 @@
     "eslint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit --incremental --watch",
     "clean": "rimraf .turbo node_modules dist",
-    "db:generate": "drizzle-kit generate",
-    "db:push": "drizzle-kit push",
-    "generate": "drizzle-kit generate",
-    "studio": "drizzle-kit studio"
+    "db:generate": "dotenv -e .env.development -- drizzle-kit generate",
+    "db:push": "dotenv -e .env.development -- drizzle-kit push",
+    "db:studio": "dotenv -e .env.development -- drizzle-kit studio",
+    "prod:db:generate": "dotenv -e .env.production -- drizzle-kit generate",
+    "prod:db:push": "dotenv -e .env.production -- drizzle-kit push",
+    "prod:db:studio": "dotenv -e .env.production -- drizzle-kit studio"
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.2",

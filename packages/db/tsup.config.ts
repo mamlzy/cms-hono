@@ -9,7 +9,7 @@ export default defineConfig({
     'src/types/index.ts',
     'src/constant.ts',
   ],
-  format: ['esm'],
+  format: ['esm', 'cjs'],
   dts: true,
   outDir: 'dist',
   clean: true,

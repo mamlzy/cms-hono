@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import path from 'path';
 import { nanoid } from 'nanoid';
 import { writingFile } from '@/lib/utils';
+import { CWD } from '@/constants';
 
 export const testRoutes = new Hono()
   .get('/', (c) => {
@@ -19,7 +20,7 @@ export const testRoutes = new Hono()
 
       try {
         await writingFile(
-          path.join(process.cwd(), 'public'),
+          path.join(CWD, 'public'),
           fileName,
           Buffer.from(arr),
         );

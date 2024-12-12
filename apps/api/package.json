@@ -1,11 +1,12 @@
 {
   "name": "@repo/api",
   "version": "1.0.0",
+  "type": "module",
   "exports": {
     "./hc": {
       "import": {
         "types": "./src/hc.ts",
-        "default": "./dist/hc.mjs"
+        "default": "./dist/hc.js"
       }
     }
   },
@@ -13,17 +14,19 @@
     "dev": "pnpm --filter @repo/api --parallel \"/^dev:.*/\"",
     "dev:tsup": "tsup --watch",
     "dev:tsx": "tsx watch src/index.ts --clear-screen=false",
-    "build": "tsc -p tsconfig.build.json"
+    "build": "tsc && tsc-alias"
   },
   "dependencies": {
-    "@repo/db": "workspace:*",
     "@hono/node-server": "^1.13.7",
+    "@repo/db": "workspace:*",
     "date-fns": "^4.1.0",
+    "dotenv": "^16.4.7",
     "hono": "^4.6.1",
     "nanoid": "^5.0.9"
   },
   "devDependencies": {
     "@types/node": "^22.10.1",
+    "tsc-alias": "^1.8.10",
     "tsup": "^8.3.5",
     "tsx": "^4.19.2"
   }

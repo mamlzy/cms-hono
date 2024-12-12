@@ -2,11 +2,21 @@
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
   "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "public/dist/**"],
+      "inputs": ["$TURBO_DEFAULT$", ".env.production"]
+    },
     "dev": {
       "cache": false,
       "persistent": true
     },
     "db:push": {
+      "cache": false,
+      "interactive": true,
+      "persistent": true
+    },
+    "prod:db:push": {
       "cache": false,
       "interactive": true,
       "persistent": true
