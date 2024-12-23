@@ -5,11 +5,6 @@ import { useEffect, useRef } from 'react';
 import { hc } from '@/lib/hono-client';
 
 export default function Home() {
-  console.log('NODE_ENV =>', process.env.NODE_ENV);
-  console.log(
-    'NEXT_PUBLIC_API_BASE_URL =>',
-    process.env.NEXT_PUBLIC_API_BASE_URL
-  );
   const inputRef = useRef<HTMLInputElement>(null);
 
   const onSubmit = async () => {
