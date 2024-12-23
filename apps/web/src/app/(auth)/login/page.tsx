@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { authClient } from '@repo/auth/client';
 import { AlertCircleIcon, Moon, Sun, WebhookIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { michroma } from '@/lib/fonts';
@@ -42,7 +44,9 @@ export default function Page() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
 
-  const onSubmit: SubmitHandler<z.infer<typeof loginSchema>> = (values) => {
+  const onSubmit: SubmitHandler<z.infer<typeof loginSchema>> = async (
+    values
+  ) => {
     setIsPending(true);
     setErrorMessage(null);
 
@@ -58,6 +62,26 @@ export default function Page() {
     //     setIsPending(false);
     //   },
     // });
+
+    const { data, error } = await authClient.signIn.username(
+      {
+        username: values.username,
+        password: values.password,
+      },
+      {
+        onRequest: (ctx) => {
+          setIsPending(true);
+        },
+        onSuccess: (ctx) => {
+          toast.success('Login Success');
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message);
+        },
+      }
+    );
+
+    setIsPending(false);
   };
 
   return (
