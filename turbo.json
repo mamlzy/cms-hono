@@ -11,6 +11,12 @@
       "cache": false,
       "persistent": true
     },
+    "typecheck": {
+      "cache": false
+    },
+    "eslint:fix": {
+      "cache": false
+    },
     "db:push": {
       "cache": false,
       "interactive": true,

@@ -1,6 +1,5 @@
-import { createId } from "@paralleldrive/cuid2";
-import { timestamp } from "drizzle-orm/pg-core";
-import { varchar, pgTable } from "drizzle-orm/pg-core";
+import { createId } from '@paralleldrive/cuid2';
+import { pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 
 export const userTable = pgTable('users', {
   id: varchar({ length: 255 }).primaryKey().$defaultFn(createId),

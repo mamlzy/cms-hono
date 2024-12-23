@@ -1,17 +1,15 @@
 import dotenv from 'dotenv';
-
 import { Logger } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
 
-import * as schema from './schema';
-
-import postgres from 'postgres'
 import { ENV_PATH } from './constant';
+import * as schema from './schema';
 
 dotenv.config({
   debug: true,
   path: ENV_PATH,
-})
+});
 
 class QueryLogger implements Logger {
   // eslint-disable-next-line class-methods-use-this

@@ -1,5 +1,6 @@
-import { AppType } from './app';
 import { hc } from 'hono/client';
+
+import { AppType } from './app';
 
 const client = hc<AppType>('');
 export type Client = typeof client;

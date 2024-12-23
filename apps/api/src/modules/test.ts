@@ -1,8 +1,9 @@
-import { Hono } from 'hono';
 import path from 'path';
-import { nanoid } from 'nanoid';
-import { writingFile } from '@/lib/utils';
 import { CWD } from '@/constants';
+import { Hono } from 'hono';
+import { nanoid } from 'nanoid';
+
+import { writingFile } from '@/lib/utils';
 
 export const testRoutes = new Hono()
   .get('/', (c) => {
@@ -12,18 +13,14 @@ export const testRoutes = new Hono()
   })
   .post('/', async (c) => {
     const body = await c.req.parseBody({ all: true });
-    const files = body['files'] as File[];
+    const files = body.files as File[];
 
     for (const file of files) {
       const arr = await file.arrayBuffer();
       const fileName = `${nanoid(5)}-${path.extname(file.name)}`;
 
       try {
-        await writingFile(
-          path.join(CWD, 'public'),
-          fileName,
-          Buffer.from(arr),
-        );
+        await writingFile(path.join(CWD, 'public'), fileName, Buffer.from(arr));
       } catch (e) {
         return c.json({ error: e?.toString() }, 500);
       }

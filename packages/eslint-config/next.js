@@ -4,13 +4,6 @@ const project = resolve(process.cwd(), 'tsconfig.json');
 
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
-  globals: {
-    React: true,
-    JSX: true,
-  },
-  env: {
-    node: true,
-  },
   extends: [
     'next/core-web-vitals',
     'airbnb',
@@ -18,11 +11,31 @@ module.exports = {
     'plugin:@tanstack/eslint-plugin-query/recommended',
     'plugin:tailwindcss/recommended',
     'plugin:prettier/recommended',
+    'turbo',
   ],
+  globals: {
+    React: true,
+    JSX: true,
+  },
+  env: {
+    node: true,
+    browser: true,
+  },
   parserOptions: {
-    project,
     warnOnUnsupportedTypeScriptVersion: false,
   },
+  settings: {
+    'import/resolver': {
+      typescript: {
+        project,
+      },
+    },
+  },
+  ignorePatterns: [
+    // Ignore dotfiles
+    'node_modules/',
+  ],
+  overrides: [{ files: ['*.js?(x)', '*.ts?(x)'] }],
   rules: {
     //! TS
     '@typescript-eslint/no-unused-vars': [
@@ -76,25 +89,4 @@ module.exports = {
     'no-plusplus': 'off',
     'no-restricted-syntax': 'off',
   },
-  settings: {
-    'import/resolver': {
-      typescript: {
-        project,
-      },
-    },
-  },
-  ignorePatterns: [
-    // Ignore dotfiles
-    '.*.js',
-    'node_modules/',
-  ],
-  overrides: [
-    { files: ['*.js?(x)', '*.ts?(x)'] },
-    {
-      files: ['*.ts', '*.tsx'],
-      rules: {
-        'no-undef': 'off',
-      },
-    },
-  ],
 };

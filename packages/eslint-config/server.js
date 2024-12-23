@@ -9,7 +9,21 @@ module.exports = {
     'airbnb-typescript/base',
     'plugin:prettier/recommended',
   ],
-  plugins: ['import', '@typescript-eslint'],
+  // plugins: ['import', '@typescript-eslint'],
+  parserOptions: {
+    warnOnUnsupportedTypeScriptVersion: false,
+  },
+  settings: {
+    // 'import/parsers': {
+    //   '@typescript-eslint/parser': ['.ts', '.tsx'],
+    // },
+    'import/resolver': {
+      typescript: {
+        project,
+      },
+    },
+  },
+  ignorePatterns: ['node_modules/', 'dist/'],
   rules: {
     //! typescript
     '@typescript-eslint/no-redeclare': 0,
@@ -41,15 +55,4 @@ module.exports = {
     camelcase: 0,
     // 'consistent-return': 0,
   },
-  settings: {
-    'import/parsers': {
-      '@typescript-eslint/parser': ['.ts', '.tsx'],
-    },
-    'import/resolver': {
-      typescript: {
-        project,
-      },
-    },
-  },
-  ignorePatterns: ['**/*.js'],
 };

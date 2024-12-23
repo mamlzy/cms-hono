@@ -11,10 +11,12 @@
     }
   },
   "scripts": {
+    "build": "tsc && tsc-alias",
     "dev": "pnpm --filter @repo/api --parallel \"/^dev:.*/\"",
     "dev:tsup": "tsup --watch",
     "dev:tsx": "tsx watch src/index.ts --clear-screen=false",
-    "build": "tsc && tsc-alias"
+    "eslint:fix": "eslint --fix src",
+    "typecheck": "tsc --noEmit --incremental --watch"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.7",
@@ -25,6 +27,7 @@
     "nanoid": "^5.0.9"
   },
   "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
     "@types/node": "^22.10.1",
     "tsc-alias": "^1.8.10",
     "tsup": "^8.3.5",
