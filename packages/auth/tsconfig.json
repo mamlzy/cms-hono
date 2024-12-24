@@ -7,7 +7,7 @@
     "moduleResolution": "bundler",
     "strict": true,
     "skipLibCheck": true,
-    "lib": ["ESNext"],
+    "lib": ["es2022", "dom", "dom.iterable"],
     "types": ["node"],
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
@@ -19,5 +19,5 @@
   "tsc-alias": {
     "resolveFullPaths": true
   },
-  "include": ["src/**/*", ".eslintrc.cjs"]
+  "include": ["src/**/*", ".eslintrc.cjs", "tsup.config.ts"]
 }

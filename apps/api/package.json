@@ -10,7 +10,9 @@
     "typecheck": "tsc --noEmit --incremental --watch"
   },
   "dependencies": {
+    "@elysiajs/cors": "^1.2.0",
     "@elysiajs/node": "1.2.0-rc.0",
+    "@elysiajs/swagger": "^1.2.0",
     "@hono/node-server": "^1.13.7",
     "@repo/auth": "workspace:*",
     "@repo/db": "workspace:*",
