@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc src/index.ts --outDir dist",
+    "build": "tsc && tsc-alias src/index.ts",
     "start": "NODE_ENV=production node dist/index.js",
     "eslint:fix": "eslint --fix src",
     "typecheck": "tsc --noEmit --incremental --watch"

@@ -1,3 +1,3 @@
-import { hcWithType } from '@repo/api/hc';
+// import { hcWithType } from '@repo/api/hc';
 
-export const hc = hcWithType(process.env.NEXT_PUBLIC_API_BASE_URL!);
+// export const hc = hcWithType(process.env.NEXT_PUBLIC_API_BASE_URL!);

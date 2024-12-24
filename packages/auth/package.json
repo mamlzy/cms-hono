@@ -2,20 +2,10 @@
   "name": "@repo/auth",
   "version": "1.0.0",
   "exports": {
-    "./server": {
-      "types": "./src/server/index.ts",
-      "require": "./dist/server/index.js",
-      "import": "./dist/server/index.mjs"
-    },
-    "./client": {
-      "types": "./src/client/index.ts",
-      "require": "./dist/client/index.js",
-      "import": "./dist/client/index.mjs"
-    }
+    "./server": "./src/server/index.ts",
+    "./client": "./src/client/index.ts"
   },
   "scripts": {
-    "dev": "tsup --watch",
-    "build": "tsup",
     "eslint": "eslint src",
     "eslint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit --incremental --watch",

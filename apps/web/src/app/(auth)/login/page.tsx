@@ -69,10 +69,10 @@ export default function Page() {
         password: values.password,
       },
       {
-        onRequest: (ctx) => {
+        onRequest: () => {
           setIsPending(true);
         },
-        onSuccess: (ctx) => {
+        onSuccess: () => {
           toast.success('Login Success');
         },
         onError: (ctx) => {
@@ -85,6 +85,7 @@ export default function Page() {
   };
 
   return (
+    // eslint-disable-next-line tailwindcss/classnames-order
     <div className='bg-dot-black/[0.2] dark:bg-dot-white/[0.2] relative flex min-h-screen w-full flex-col items-center justify-center bg-white dark:bg-black'>
       {isMounted && <ThemeToggler />}
 

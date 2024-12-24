@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 
-import { hc } from '@/lib/hono-client';
+// import { hc } from '@/lib/hono-client';
 
 export default function Home() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -35,10 +35,9 @@ export default function Home() {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await hc.api.users.$get();
-      const data = await res.json();
-
-      console.log('data =>', data);
+      // const res = await hc.api.users.$get();
+      // const data = await res.json();
+      // console.log('data =>', data);
     };
 
     getData();

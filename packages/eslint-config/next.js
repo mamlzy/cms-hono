@@ -22,6 +22,7 @@ module.exports = {
     browser: true,
   },
   parserOptions: {
+    project,
     warnOnUnsupportedTypeScriptVersion: false,
   },
   settings: {
