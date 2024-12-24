@@ -13,6 +13,7 @@ export const testRoutes = new Hono()
   })
   .post('/', async (c) => {
     const body = await c.req.parseBody({ all: true });
+    console.log('body =>', body);
     const files = body.files as File[];
 
     for (const file of files) {

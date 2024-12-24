@@ -85,7 +85,7 @@ export default function Page() {
   };
 
   return (
-    <div className='bg-dot-black/[0.2] dark:bg-dot-white/[0.2] relative flex min-h-screen w-full flex-col items-center justify-center bg-white dark:bg-black'>
+    <div className='relative flex min-h-screen w-full flex-col items-center justify-center bg-white bg-dot-black/[0.2] dark:bg-black dark:bg-dot-white/[0.2]'>
       {isMounted && <ThemeToggler />}
 
       {/* Radial gradient for the container to give a faded look */}
@@ -104,7 +104,7 @@ export default function Page() {
       </div>
 
       {/* <h2 className='mb-8 text-5xl font-bold'>Welcome Back</h2> */}
-      <p className='relative z-20 from-neutral-200 to-neutral-500 bg-clip-text py-8 text-4xl font-bold sm:text-5xl dark:bg-gradient-to-b dark:text-transparent'>
+      <p className='relative z-20 from-neutral-200 to-neutral-500 bg-clip-text py-8 text-4xl font-bold dark:bg-gradient-to-b dark:text-transparent sm:text-5xl'>
         Welcome back
       </p>
 
@@ -149,9 +149,9 @@ export default function Page() {
             />
 
             {errorMessage && (
-              <div className='border-destructive flex items-start gap-x-2 rounded-lg border px-4 py-3 pb-2'>
-                <AlertCircleIcon className='text-destructive size-4' />{' '}
-                <span className='text-destructive translate-y-[-0.18rem]'>
+              <div className='flex items-start gap-x-2 rounded-lg border border-destructive px-4 py-3 pb-2'>
+                <AlertCircleIcon className='size-4 text-destructive' />{' '}
+                <span className='translate-y-[-0.18rem] text-destructive'>
                   {errorMessage}
                 </span>
               </div>

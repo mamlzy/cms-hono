@@ -1,3 +1,5 @@
+import path from 'path';
+
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
   root: true,
@@ -5,6 +7,11 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: true,
+  },
+  settings: {
+    tailwindcss: {
+      config: path.join(__dirname, './tailwind.config.ts'),
+    },
   },
   rules: {
     'turbo/no-undeclared-env-vars': 'off',

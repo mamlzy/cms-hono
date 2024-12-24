@@ -7,7 +7,7 @@
     "moduleResolution": "bundler",
     "strict": true,
     "skipLibCheck": true,
-    "lib": ["ESNext"],
+    "lib": ["es2022", "dom", "dom.iterable"],
     "types": ["node"],
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
