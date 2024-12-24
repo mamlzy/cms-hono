@@ -1,20 +1,15 @@
-import { serve } from '@hono/node-server';
-import dotenv from 'dotenv';
+import { node } from '@elysiajs/node';
+import { db } from '@repo/db';
+import { Elysia } from 'elysia';
 
-import { app } from './app';
-import { ENV_PATH } from './constants';
+const app = new Elysia({ adapter: node() })
+  .get('/', async () => {
+    const users = await db.query.userTable.findMany();
 
-dotenv.config({
-  debug: true,
-  path: ENV_PATH,
-});
+    return users;
+  })
+  .listen(5000);
 
-const PORT = process.env.PORT! as unknown as number;
-
-console.log(`Server is running on port http://localhost:${PORT}`);
-console.log('NODE_ENV =>', process.env.NODE_ENV);
-
-serve({
-  fetch: app.fetch,
-  port: PORT,
-});
+console.log(
+  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
+);

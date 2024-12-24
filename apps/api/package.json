@@ -2,28 +2,21 @@
   "name": "@repo/api",
   "version": "1.0.0",
   "type": "module",
-  "exports": {
-    "./hc": {
-      "import": {
-        "types": "./src/hc.ts",
-        "default": "./dist/hc.js"
-      }
-    }
-  },
   "scripts": {
-    "build": "tsc && tsc-alias",
-    "dev": "pnpm --filter @repo/api --parallel \"/^dev:.*/\"",
-    "dev:tsup": "tsup --watch",
-    "dev:tsx": "tsx watch src/index.ts --clear-screen=false",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc src/index.ts --outDir dist",
+    "start": "NODE_ENV=production node dist/index.js",
     "eslint:fix": "eslint --fix src",
     "typecheck": "tsc --noEmit --incremental --watch"
   },
   "dependencies": {
-    "@repo/db": "workspace:*",
-    "@repo/auth": "workspace:*",
+    "@elysiajs/node": "1.2.0-rc.0",
     "@hono/node-server": "^1.13.7",
+    "@repo/auth": "workspace:*",
+    "@repo/db": "workspace:*",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
+    "elysia": "^1.2.2",
     "hono": "^4.6.1",
     "nanoid": "^5.0.9"
   },
