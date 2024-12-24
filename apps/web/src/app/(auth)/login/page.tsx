@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { authClient } from '@repo/auth/client';
+import { useMutation } from '@tanstack/react-query';
 import { AlertCircleIcon, Moon, Sun, WebhookIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -44,6 +45,18 @@ export default function Page() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
 
+  const testMutation = useMutation({
+    mutationFn: async (values: z.infer<typeof loginSchema>) => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/test`, {
+        method: 'POST',
+        body: JSON.stringify(values),
+      });
+      const data = await res.json();
+
+      console.log('data =>', data);
+    },
+  });
+
   const onSubmit: SubmitHandler<z.infer<typeof loginSchema>> = async (
     values
   ) => {
@@ -63,25 +76,29 @@ export default function Page() {
     //   },
     // });
 
-    const { data, error } = await authClient.signIn.username(
-      {
-        username: values.username,
-        password: values.password,
-      },
-      {
-        onRequest: () => {
-          setIsPending(true);
+    try {
+      const { data, error } = await authClient.signIn.username(
+        {
+          username: values.username,
+          password: values.password,
         },
-        onSuccess: () => {
-          toast.success('Login Success');
-        },
-        onError: (ctx) => {
-          toast.error(ctx.error.message);
-        },
-      }
-    );
-
-    setIsPending(false);
+        {
+          onRequest: () => {
+            setIsPending(true);
+          },
+          onSuccess: () => {
+            toast.success('Login Success');
+          },
+          onError: (ctx) => {
+            toast.error(ctx.error.message);
+          },
+        }
+      );
+    } catch (err) {
+      console.log('err =>', err);
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
@@ -156,6 +173,28 @@ export default function Page() {
                 </span>
               </div>
             )}
+
+            <Button
+              type='button'
+              size='lg'
+              className='mx-auto block text-white'
+              disabled={isPending}
+              onClick={() => {
+                testMutation.mutate(
+                  { password: '123456', username: 'mamlzy' },
+                  {
+                    onSuccess: () => {
+                      toast.success('Test Success');
+                    },
+                    onError: (err) => {
+                      toast.error(err.message);
+                    },
+                  }
+                );
+              }}
+            >
+              {isPending ? 'Testing...' : 'Test'}
+            </Button>
 
             <Button
               type='submit'

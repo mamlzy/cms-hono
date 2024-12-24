@@ -2,30 +2,12 @@
   "name": "@repo/db",
   "version": "1.0.0",
   "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs"
-    },
-    "./schema": {
-      "types": "./src/schema/index.ts",
-      "require": "./dist/schema/index.js",
-      "import": "./dist/schema/index.mjs"
-    },
-    "./types": {
-      "types": "./src/types/index.ts",
-      "require": "./dist/types/index.js",
-      "import": "./dist/types/index.mjs"
-    },
-    "./constant": {
-      "types": "./src/constant.ts",
-      "require": "./dist/constant.js",
-      "import": "./dist/constant.mjs"
-    }
+    ".": "./src/index.ts",
+    "./schema": "./src/schema/index.ts",
+    "./types": "./src/types/index.ts",
+    "./constant": "./src/constant.ts"
   },
   "scripts": {
-    "dev": "tsup --watch",
-    "build": "tsup",
     "eslint": "eslint src",
     "eslint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit --incremental --watch",

@@ -8,18 +8,22 @@ import betterAuthView from './libs/auth';
 import { userMiddleware } from './middlewares/auth-middleware';
 
 const app = new Elysia({ adapter: node() })
-  .use(
-    cors({
-      origin: ['http://localhost:3000'],
-    })
-  )
-  // .use(swagger())
+  .use(cors())
+  .use(swagger())
   // .derive(userMiddleware)
   .all('/api/auth/*', betterAuthView)
   .get('/', async () => {
     const users = await db.query.userTable.findMany();
 
     return users;
+  })
+  .post('/api/test', async () => {
+    const users = await db.query.userTable.findMany();
+
+    return users;
+  })
+  .get('/api', async () => {
+    return { message: 'Hello from API' };
   })
   .listen(5000);
 
