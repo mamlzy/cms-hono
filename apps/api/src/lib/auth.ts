@@ -1,5 +1,4 @@
 import { db } from '@repo/db'; // your drizzle instance
-
 import {
   accountTable as account,
   sessionTable as session,
