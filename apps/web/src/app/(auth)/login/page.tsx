@@ -47,7 +47,7 @@ export default function Page() {
 
   const testMutation = useMutation({
     mutationFn: async (values: z.infer<typeof loginSchema>) => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/test`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
         method: 'POST',
         body: JSON.stringify(values),
       });
@@ -175,8 +175,18 @@ export default function Page() {
             )}
 
             <Button
+              type='submit'
+              size='lg'
+              className='mx-auto block text-white'
+              disabled={isPending}
+            >
+              {isPending ? 'Loading...' : 'Login'}
+            </Button>
+
+            <Button
               type='button'
               size='lg'
+              variant='destructive'
               className='mx-auto block text-white'
               disabled={isPending}
               onClick={() => {
@@ -193,16 +203,7 @@ export default function Page() {
                 );
               }}
             >
-              {isPending ? 'Testing...' : 'Test'}
-            </Button>
-
-            <Button
-              type='submit'
-              size='lg'
-              className='mx-auto block text-white'
-              disabled={isPending}
-            >
-              {isPending ? 'Loading...' : 'Login'}
+              {isPending ? 'Testing...' : 'Test Cors'}
             </Button>
           </form>
         </Form>

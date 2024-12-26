@@ -7,4 +7,7 @@ export const authClient = createAuthClient({
     enabled: true,
   },
   plugins: [usernameClient()],
+  fetchOptions: {
+    credentials: 'include',
+  },
 });

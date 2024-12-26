@@ -5,30 +5,38 @@ import { db } from '@repo/db';
 import { Elysia } from 'elysia';
 
 import betterAuthView from './libs/auth';
-import { userMiddleware } from './middlewares/auth-middleware';
+
+// import { userMiddleware } from './middlewares/auth-middleware';
 
 const app = new Elysia({ adapter: node() })
-  .use(cors())
+  .use(
+    cors({
+      origin: 'http://localhost:3000',
+      credentials: true,
+    })
+  )
   .use(swagger())
+  .onRequest(({ set }) => {
+    set.headers['access-control-allow-credentials'] = 'true';
+  })
   // .derive(userMiddleware)
   .all('/api/auth/*', betterAuthView)
   .get('/', async () => {
-    const users = await db.query.userTable.findMany();
-
-    return users;
-  })
-  .post('/api/test', async () => {
-    const users = await db.query.userTable.findMany();
-
-    return users;
+    return {
+      message: 'Hello',
+    };
   })
   .get('/api', async () => {
     return { message: 'Hello from API' };
   })
-  .listen(5000);
+  .post('/api/users', async () => {
+    const users = await db.query.userTable.findMany();
 
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
+    return users;
+  })
+
+  .listen(process.env.PORT);
+
+console.log(`🦊 Elysia is running at http://localhost:${process.env.PORT}`);
 
 export type App = typeof app;
