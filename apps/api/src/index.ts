@@ -16,9 +16,6 @@ const app = new Elysia({ adapter: node() })
     })
   )
   .use(swagger())
-  .onRequest(({ set }) => {
-    set.headers['access-control-allow-credentials'] = 'true';
-  })
   // .derive(userMiddleware)
   .all('/api/auth/*', betterAuthView)
   .get('/', async () => {
