@@ -39,8 +39,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/db
       better-auth:
-        specifier: 1.1.4-beta.1
-        version: 1.1.4-beta.1
+        specifier: 1.1.3
+        version: 1.1.3
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -100,8 +100,8 @@ importers:
         specifier: ^5.62.8
         version: 5.62.8(@tanstack/react-query@5.62.8(react@19.0.0))(react@19.0.0)
       better-auth:
-        specifier: 1.1.4-beta.1
-        version: 1.1.4-beta.1
+        specifier: 1.1.3
+        version: 1.1.3
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -185,8 +185,8 @@ importers:
         specifier: workspace:*
         version: link:../db
       better-auth:
-        specifier: 1.1.4-beta.1
-        version: 1.1.4-beta.1
+        specifier: 1.1.3
+        version: 1.1.3
       dotenv:
         specifier: ^16.4.5
         version: 16.4.7
@@ -1900,8 +1900,8 @@ packages:
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
 
-  better-auth@1.1.4-beta.1:
-    resolution: {integrity: sha512-yZkmyOKw3vB/q97N70bwivM1nkr/crRiQRbZvDrwQdUhMR/pEZ8n4fET6A1khpiCSp8Dp4viBlvmlhy+1Apn/A==}
+  better-auth@1.1.3:
+    resolution: {integrity: sha512-8zUOd5zGAQLBJXupDiwAUzreLf2Msu1HVtkRWQk09hvHURZZIiuH8g48WIRXraNNoeqIA+bW70uap5Fxnj8d1w==}
 
   better-call@0.3.3-beta.4:
     resolution: {integrity: sha512-txigUTFsjOlE4dfkfhDhu6Gk0I1Xo3S4Nye+nfMKJXknb+WsymcWtqoRUSUGdhOMumM3LT9R3QttTUxwny9lWQ==}
@@ -5236,7 +5236,7 @@ snapshots:
 
   balanced-match@1.0.2: {}
 
-  better-auth@1.1.4-beta.1:
+  better-auth@1.1.3:
     dependencies:
       '@better-auth/utils': 0.2.2
       '@better-fetch/fetch': 1.1.12
