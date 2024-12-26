@@ -1,11 +1,11 @@
 import { serveStatic } from '@hono/node-server/serve-static';
-import { auth } from '@repo/auth/server';
 import dotenv from 'dotenv';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 
 import { ENV_PATH } from './constants';
+import { auth } from './lib/auth';
 import { createRoutes } from './routes';
 
 dotenv.config({
@@ -18,7 +18,7 @@ const app = new Hono();
 app.use(
   '*',
   cors({
-    origin: ['http://localhost:3000'],
+    origin: [process.env.NEXT_PUBLIC_WEB_BASE_URL!],
     credentials: true,
   })
 );

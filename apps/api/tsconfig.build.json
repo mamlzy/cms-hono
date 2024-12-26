@@ -5,5 +5,5 @@
     "declaration": false,
     "declarationMap": false
   },
-  "include": ["src/hc.ts"]
+  "include": ["src/**/*"]
 }

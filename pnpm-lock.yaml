@@ -38,6 +38,9 @@ importers:
       '@repo/db':
         specifier: workspace:*
         version: link:../../packages/db
+      better-auth:
+        specifier: 1.1.4-beta.1
+        version: 1.1.4-beta.1
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -96,6 +99,9 @@ importers:
       '@tanstack/react-query-devtools':
         specifier: ^5.62.8
         version: 5.62.8(@tanstack/react-query@5.62.8(react@19.0.0))(react@19.0.0)
+      better-auth:
+        specifier: 1.1.4-beta.1
+        version: 1.1.4-beta.1
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1

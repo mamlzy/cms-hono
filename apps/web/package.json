@@ -13,6 +13,7 @@
   "dependencies": {
     "@repo/api": "workspace:*",
     "@repo/auth": "workspace:*",
+    "better-auth": "1.1.3",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-popover": "^1.1.4",

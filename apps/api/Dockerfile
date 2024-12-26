@@ -57,4 +57,4 @@ ENV ENV_PATH /apps/api/.env
 # USER expressjs
 COPY --from=installer /app .
 
-CMD node apps/api/dist/index.js
+CMD node apps/api/dist/src/index.js
