@@ -23,7 +23,7 @@ const SIDEBAR_COOKIE_NAME = 'sidebar:state';
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = '16rem';
 const SIDEBAR_WIDTH_MOBILE = '18rem';
-const SIDEBAR_WIDTH_ICON = '3rem';
+const SIDEBAR_WIDTH_ICON = '0rem';
 const SIDEBAR_KEYBOARD_SHORTCUT = 'b';
 
 type TSidebarContext = {
@@ -91,9 +91,7 @@ const SidebarProvider = React.forwardRef<
 
     // Helper to toggle the sidebar.
     const toggleSidebar = React.useCallback(() => {
-      return isMobile
-        ? setOpenMobile((open) => !open)
-        : setOpen((open) => !open);
+      return setOpen((open) => !open);
     }, [isMobile, setOpen, setOpenMobile]);
 
     // Adds a keyboard shortcut to toggle the sidebar.
@@ -359,7 +357,10 @@ const SidebarHeader = React.forwardRef<
     <div
       ref={ref}
       data-sidebar='header'
-      className={cn('flex flex-col gap-2 p-2', className)}
+      className={cn(
+        'flex flex-col gap-2 p-2 group-data-[collapsible=icon]:overflow-hidden',
+        className
+      )}
       {...props}
     />
   );
@@ -493,7 +494,10 @@ const SidebarMenu = React.forwardRef<
   <ul
     ref={ref}
     data-sidebar='menu'
-    className={cn('flex w-full min-w-0 flex-col gap-1', className)}
+    className={cn(
+      'flex w-full min-w-0 flex-col gap-1 group-data-[collapsible=icon]:overflow-hidden',
+      className
+    )}
     {...props}
   />
 ));
@@ -560,6 +564,7 @@ const SidebarMenuButton = React.forwardRef<
     const button = (
       <Comp
         ref={ref}
+        // href='/'
         data-sidebar='menu-button'
         data-size={size}
         data-active={isActive}
@@ -691,7 +696,7 @@ const SidebarMenuSub = React.forwardRef<
     ref={ref}
     data-sidebar='menu-sub'
     className={cn(
-      'mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border px-2.5 py-0.5',
+      'ml-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border py-0.5 pl-2.5',
       'group-data-[collapsible=icon]:hidden',
       className
     )}
