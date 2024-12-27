@@ -1,23 +1,17 @@
 'use client';
 
 import * as React from 'react';
+import Link from 'next/link';
 import {
   AudioWaveform,
-  BookOpen,
-  Bot,
   ChevronRightIcon,
   Command,
-  FileIcon,
+  DatabaseIcon,
   FolderIcon,
-  // Frame,
   GalleryVerticalEnd,
-  // Map,
-  // PieChart,
-  Settings2,
-  SquareTerminal,
+  type LucideIcon,
 } from 'lucide-react';
 
-// import { NavProjects } from '@/components/nav-projects';
 import { NavUser } from '@/components/sidebar/nav-user';
 import { TeamSwitcher } from '@/components/sidebar/team-switcher';
 import {
@@ -40,216 +34,96 @@ import {
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
 
-type SidebarNode =
-  | string
-  | { title: string; href: string }
-  | [string, ...SidebarNode[]];
-
-const tree: SidebarNode[] = [
-  [
-    'components',
-    [
-      'ui',
-      { title: 'button.tsx', href: '/button' },
-      { title: 'card.tsx', href: '/card' },
-      [
-        'xx',
-        { title: 'button.tsx', href: '/button' },
-        { title: 'card.tsx', href: '/card' },
-      ],
-    ],
-    { title: 'header.tsx', href: '/header' },
-    { title: 'footer.tsx', href: '/footer' },
-    [
-      'ux',
-      { title: 'button.tsx', href: '/button' },
-      { title: 'card.tsx', href: '/card' },
-    ],
-  ],
-  { title: '.eslintrc.json', href: '/eslintrc' },
+const teams = [
+  {
+    name: 'Acme Inc',
+    logo: GalleryVerticalEnd,
+    plan: 'Enterprise',
+  },
+  {
+    name: 'Acme Corp.',
+    logo: AudioWaveform,
+    plan: 'Startup',
+  },
+  {
+    name: 'Evil Corp.',
+    logo: Command,
+    plan: 'Free',
+  },
 ];
 
-// This is sample data.
-const data = {
-  user: {
-    name: 'shadcn',
-    email: 'm@example.com',
-    avatar: '/avatars/shadcn.jpeg',
-  },
-  teams: [
+const user = {
+  name: 'shadcn',
+  email: 'm@example.com',
+  avatar: '/avatars/shadcn.jpeg',
+};
+
+type SidebarNode = {
+  title: string;
+  icon?: LucideIcon;
+} & (
+  | { href?: never; items: SidebarNode[] } // parent
+  | { href: string; items?: never } // child
+);
+
+const sidebarData = {
+  main: [
     {
-      name: 'Acme Inc',
-      logo: GalleryVerticalEnd,
-      plan: 'Enterprise',
-    },
-    {
-      name: 'Acme Corp.',
-      logo: AudioWaveform,
-      plan: 'Startup',
-    },
-    {
-      name: 'Evil Corp.',
-      logo: Command,
-      plan: 'Free',
-    },
-  ],
-  navMain: [
-    {
-      title: 'Playground',
-      url: '#',
-      icon: SquareTerminal,
-      isActive: true,
+      title: 'components',
+      icon: DatabaseIcon,
       items: [
         {
-          title: 'History',
-          url: '#',
-        },
-        {
-          title: 'Starred',
-          url: '#',
-        },
-        {
-          title: 'Settings',
-          url: '#',
+          title: 'ui',
+          icon: FolderIcon,
+          items: [
+            { title: 'button.tsx', href: '/button' },
+            { title: 'card.tsx', href: '/card' },
+            {
+              title: 'xx',
+              icon: FolderIcon,
+              items: [
+                { title: 'button.tsx', href: '/button' },
+                { title: 'card.tsx', href: '/card' },
+              ],
+            },
+          ],
         },
       ],
     },
+    { title: 'header.tsx', href: '/header' },
+    { title: 'footer.tsx', href: '/footer' },
     {
-      title: 'Models',
-      url: '#',
-      icon: Bot,
+      title: 'ux',
+      icon: FolderIcon,
       items: [
-        {
-          title: 'Genesis',
-          url: '#',
-        },
-        {
-          title: 'Explorer',
-          url: '#',
-        },
-        {
-          title: 'Quantum',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Documentation',
-      url: '#',
-      icon: BookOpen,
-      items: [
-        {
-          title: 'Introduction',
-          url: '#',
-        },
-        {
-          title: 'Get Started',
-          url: '#',
-        },
-        {
-          title: 'Tutorials',
-          url: '#',
-        },
-        {
-          title: 'Changelog',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Settings',
-      url: '#',
-      icon: Settings2,
-      items: [
-        {
-          title: 'General',
-          url: '#',
-        },
-        {
-          title: 'Team',
-          url: '#',
-        },
-        {
-          title: 'Billing',
-          url: '#',
-        },
-        {
-          title: 'Limits',
-          url: '#',
-        },
-      ],
-    },
-  ],
-  tree: [
-    // [
-    //   'app',
-    //   [
-    //     'api',
-    //     ['hello', ['route.ts']],
-    //     'page.tsx',
-    //     'layout.tsx',
-    //     ['blog', ['page.tsx']],
-    //   ],
-    // ],
-    [
-      'components',
-      [
-        'ui',
         { title: 'button.tsx', href: '/button' },
         { title: 'card.tsx', href: '/card' },
       ],
-      // 'header.tsx',
-      // 'footer.tsx',
-    ],
-    // ['lib', ['util.ts']],
-    // ['public', 'favicon.ico', 'vercel.svg'],
-    '.eslintrc.json',
-    '.gitignore',
-    'next.config.js',
-    'tailwind.config.js',
-    'package.json',
-    'README.md',
+    },
+    { title: '.eslintrc.json', href: '/eslintrc' },
   ],
-  // projects: [
-  //   {
-  //     name: 'Design Engineering',
-  //     url: '#',
-  //     icon: Frame,
-  //   },
-  //   {
-  //     name: 'Sales & Marketing',
-  //     url: '#',
-  //     icon: PieChart,
-  //   },
-  //   {
-  //     name: 'Travel',
-  //     url: '#',
-  //     icon: Map,
-  //   },
-  // ],
-};
+} satisfies Record<string, SidebarNode[]>;
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible='icon' {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher teams={teams} />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Files</SidebarGroupLabel>
+          <SidebarGroupLabel>Main</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {tree.map((item, index) => (
+              {sidebarData.main.map((item, index) => (
                 <Tree key={index} item={item} />
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
@@ -257,32 +131,25 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 }
 
 function Tree({ item }: { item: SidebarNode }) {
-  if (typeof item === 'string') {
-    // Render a folder name or file name
-    return (
-      <SidebarMenuButton>
-        <FolderIcon />
-        {item}
-      </SidebarMenuButton>
-    );
-  }
-
-  if (Array.isArray(item)) {
-    const [name, ...items] = item;
-
+  if (item.items && item.items?.length > 0) {
+    // render a dropdown with nested items
     return (
       <SidebarMenuItem>
-        <Collapsible className='group/collapsible [&[data-state=open]>button>svg:first-child]:rotate-90'>
+        <Collapsible className='group/collapsible [&[data-state=open]>button>svg:last-child]:rotate-90'>
           <CollapsibleTrigger asChild>
             <SidebarMenuButton>
-              <ChevronRightIcon className='transition-transform' />
-              <FolderIcon />
-              {name}
+              {item.icon ? (
+                <item.icon className='mr-2' />
+              ) : (
+                <FolderIcon className='mr-2' />
+              )}
+              {item.title}
+              <ChevronRightIcon className='ml-auto transition-transform duration-200' />
             </SidebarMenuButton>
           </CollapsibleTrigger>
           <CollapsibleContent>
             <SidebarMenuSub>
-              {items.map((subItem, index) => (
+              {item.items.map((subItem, index) => (
                 <Tree key={index} item={subItem} />
               ))}
             </SidebarMenuSub>
@@ -292,18 +159,17 @@ function Tree({ item }: { item: SidebarNode }) {
     );
   }
 
-  if ('title' in item && 'href' in item) {
-    // Render a file link
+  if (item.href) {
+    // render a file link
     return (
-      <SidebarMenuButton
-        // href={item.href}
-        className='data-[active=true]:bg-transparent'
-      >
-        <FileIcon />
-        {item.title}
+      <SidebarMenuButton asChild>
+        <Link href={item.href} className='data-[active=true]:bg-transparent'>
+          {item.icon && <item.icon className='mr-2' />}
+          {item.title}
+        </Link>
       </SidebarMenuButton>
     );
   }
 
-  return null; // Fallback if item doesn't match any structure
+  return null; // fallback for unsupported structures
 }
