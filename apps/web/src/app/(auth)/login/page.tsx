@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { authClient } from '@repo/auth/client';
 import { useMutation } from '@tanstack/react-query';
 import { AlertCircleIcon, Moon, Sun, WebhookIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
@@ -11,6 +10,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
+import { authClient } from '@/lib/auth-client';
 import { michroma } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { useIsMounted } from '@/components/hooks/use-is-mounted';
@@ -203,7 +203,7 @@ export default function Page() {
                 );
               }}
             >
-              {isPending ? 'Testing...' : 'Test Cors'}
+              {isPending ? 'Testing...' : 'Test Cors (Get Users)'}
             </Button>
           </form>
         </Form>

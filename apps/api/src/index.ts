@@ -4,7 +4,7 @@ import { swagger } from '@elysiajs/swagger';
 import { db } from '@repo/db';
 import { Elysia } from 'elysia';
 
-import betterAuthView from './libs/auth';
+import { betterAuthView } from './libs/auth';
 
 // import { userMiddleware } from './middlewares/auth-middleware';
 
@@ -27,6 +27,10 @@ const app = new Elysia({ adapter: node() })
     return { message: 'Hello from API' };
   })
   .post('/api/users', async () => {
+    console.log(
+      'process.env.NEXT_PUBLIC_WEB_BASE_URL =>',
+      process.env.NEXT_PUBLIC_WEB_BASE_URL
+    );
     const users = await db.query.userTable.findMany();
 
     return users;

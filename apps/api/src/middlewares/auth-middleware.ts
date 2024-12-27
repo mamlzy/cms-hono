@@ -1,6 +1,7 @@
-import { Session, User } from '@repo/auth';
-import { auth } from '@repo/auth/server';
+import { Session, User } from 'better-auth';
 import { Context } from 'elysia';
+
+import { auth } from '../libs/auth';
 
 export const userMiddleware = async (c: Context) => {
   const session = await auth.api.getSession({ headers: c.request.headers });
