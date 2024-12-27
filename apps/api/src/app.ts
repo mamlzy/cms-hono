@@ -34,7 +34,7 @@ app.use(
 app.on(['POST', 'GET'], '/api/auth/**', (c) => auth.handler(c.req.raw));
 
 console.log(
-  '🎉🎉🎉🎉NEXT_PUBLIC_WEB_BASE_URL =>',
+  '⚡ SERVER ⚡ NEXT_PUBLIC_WEB_BASE_URL =>',
   process.env.NEXT_PUBLIC_WEB_BASE_URL
 );
 
