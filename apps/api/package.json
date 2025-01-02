@@ -10,20 +10,20 @@
   },
   "dependencies": {
     "@elysiajs/cors": "^1.2.0",
-    "@elysiajs/node": "1.2.2",
+    "@elysiajs/node": "1.2.3",
     "@elysiajs/swagger": "^1.2.0",
     "@hono/node-server": "^1.13.7",
     "@repo/db": "workspace:*",
-    "better-auth": "1.1.4",
+    "better-auth": "1.1.8",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
-    "elysia": "^1.2.7",
-    "hono": "^4.6.1",
+    "elysia": "^1.2.9",
+    "hono": "^4.6.15",
     "nanoid": "^5.0.9"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
-    "@types/node": "^22.10.1",
+    "@types/node": "^22.10.3",
     "tsc-alias": "^1.8.10",
     "tsup": "^8.3.5",
     "tsx": "^4.19.2"

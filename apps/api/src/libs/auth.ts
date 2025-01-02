@@ -13,7 +13,6 @@ dotenv.config({
 });
 
 export const auth = betterAuth({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   database: drizzleAdapter(db, {
     provider: 'pg',
   }),
@@ -21,7 +20,7 @@ export const auth = betterAuth({
     enabled: true,
   },
   plugins: [username()],
-  trustedOrigins: [process.env.NEXT_PUBLIC_WEB_BASE_URL!],
+  trustedOrigins: ['http://localhost:3000'],
 });
 
 export const betterAuthView = (context: Context) => {
