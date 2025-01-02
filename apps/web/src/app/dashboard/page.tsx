@@ -1,3 +1,6 @@
+'use client';
+
+import { authClient } from '@/lib/auth-client';
 import { AppSidebar } from '@/components/sidebar/app-sidebar';
 import {
   SidebarInset,
@@ -12,6 +15,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 
 export default function Page() {
@@ -39,6 +43,19 @@ export default function Page() {
           </div>
         </header>
         <div className='flex flex-1 flex-col gap-4 p-4 pt-0'>
+          <div className=''>
+            <Button
+              onClick={async () => {
+                await authClient.organization.create({
+                  name: 'My Organization',
+                  slug: 'my-org',
+                  logo: 'https://example.com/logo.png',
+                });
+              }}
+            >
+              Add Org
+            </Button>
+          </div>
           <div className='grid auto-rows-min gap-4 md:grid-cols-3'>
             <div className='aspect-video rounded-xl bg-muted/50' />
             <div className='aspect-video rounded-xl bg-muted/50' />

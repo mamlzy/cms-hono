@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { ChevronsUpDown, Plus } from 'lucide-react';
 
+import { authClient } from '@/lib/auth-client';
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -30,6 +31,9 @@ export function TeamSwitcher({
 }) {
   const { isMobile } = useSidebar();
   const [activeTeam, setActiveTeam] = React.useState(teams[0]);
+
+  const { data: organizations } = authClient.useListOrganizations();
+  console.log('organizations =>', organizations);
 
   return (
     <SidebarMenu>

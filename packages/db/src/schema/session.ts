@@ -14,4 +14,5 @@ export const sessionTable = pgTable('sessions', {
   userId: text()
     .notNull()
     .references(() => userTable.id),
+  activeOrganizationId: text(),
 });

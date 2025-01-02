@@ -5,6 +5,7 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "db:push": "turbo db:push",
+    "db:studio": "turbo db:studio",
     "prod:db:push": "turbo prod:db:push",
     "eslint:fix": "turbo eslint:fix",
     "typecheck": "turbo typecheck"

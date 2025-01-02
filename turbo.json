@@ -22,6 +22,9 @@
       "interactive": true,
       "persistent": true
     },
+    "db:studio": {
+      "cache": false
+    },
     "prod:db:push": {
       "cache": false,
       "interactive": true,
