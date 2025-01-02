@@ -9,7 +9,6 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 
-import { authClient } from '@/lib/auth-client';
 import { NavUser } from '@/components/sidebar/nav-user';
 import { TeamSwitcher } from '@/components/sidebar/team-switcher';
 import {
@@ -31,7 +30,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
-import { Skeleton } from '../ui/skeleton';
 
 const user = {
   name: 'shadcn',
