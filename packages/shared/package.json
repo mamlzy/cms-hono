@@ -1,0 +1,45 @@
+{
+  "name": "@repo/shared",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    },
+    "./types": {
+      "types": "./src/types/index.ts",
+      "default": "./dist/types/index.js"
+    },
+    "./schemas": {
+      "types": "./src/schemas/index.ts",
+      "default": "./dist/schemas/index.js"
+    },
+    "./constants": {
+      "types": "./src/constants.ts",
+      "default": "./dist/constants.js"
+    },
+    "./lib/zod": {
+      "types": "./src/lib/zod.ts",
+      "default": "./dist/lib/zod.js"
+    },
+    "./lib/utils": {
+      "types": "./src/lib/utils.ts",
+      "default": "./dist/lib/utils.js"
+    }
+  },
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "typecheck": "tsc --noEmit --incremental --watch"
+  },
+  "dependencies": {
+    "@repo/db": "workspace:*",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "tsup": "^8.3.0",
+    "tsx": "^4.19.1"
+  }
+}

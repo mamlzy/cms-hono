@@ -29,7 +29,6 @@
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
-    "@types/node": "^22.10.3",
     "tsc-alias": "^1.8.10",
     "tsup": "^8.3.5",
     "tsx": "^4.19.2"

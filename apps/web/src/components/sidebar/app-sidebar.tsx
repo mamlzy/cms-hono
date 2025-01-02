@@ -3,15 +3,13 @@
 import * as React from 'react';
 import Link from 'next/link';
 import {
-  AudioWaveform,
   ChevronRightIcon,
-  Command,
   DatabaseIcon,
   FolderIcon,
-  GalleryVerticalEnd,
   type LucideIcon,
 } from 'lucide-react';
 
+import { authClient } from '@/lib/auth-client';
 import { NavUser } from '@/components/sidebar/nav-user';
 import { TeamSwitcher } from '@/components/sidebar/team-switcher';
 import {
@@ -33,24 +31,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
-
-const teams = [
-  {
-    name: 'Acme Inc',
-    logo: GalleryVerticalEnd,
-    plan: 'Enterprise',
-  },
-  {
-    name: 'Acme Corp.',
-    logo: AudioWaveform,
-    plan: 'Startup',
-  },
-  {
-    name: 'Evil Corp.',
-    logo: Command,
-    plan: 'Free',
-  },
-];
+import { Skeleton } from '../ui/skeleton';
 
 const user = {
   name: 'shadcn',
@@ -108,7 +89,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible='icon' {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={teams} />
+        <TeamSwitcher />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>

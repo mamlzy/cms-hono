@@ -47,7 +47,6 @@
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
-    "@types/node": "^22.7.6",
     "@types/pg": "^8.11.10",
     "drizzle-kit": "^0.29.1",
     "eslint": "8.57.0",
