@@ -35,10 +35,11 @@ import { InputText } from '../inputs/rhf/input-text';
 
 type Organization = {
   id: string;
-  logo: string;
+  createdAt: Date;
   name: string;
   slug: string;
-  metadata: null;
+  metadata?: any;
+  logo?: string | null | undefined;
 };
 
 export function TeamSwitcher() {
@@ -85,7 +86,7 @@ export function TeamSwitcher() {
               <DropdownMenuLabel className='text-xs text-muted-foreground'>
                 Organizations
               </DropdownMenuLabel>
-              {organizations?.map((org: Organization) => (
+              {organizations?.map((org) => (
                 <DropdownMenuItem
                   key={org.name}
                   onClick={() => setActiveTeam(org)}
