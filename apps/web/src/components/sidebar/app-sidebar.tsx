@@ -31,12 +31,6 @@ import {
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
 
-const user = {
-  name: 'shadcn',
-  email: 'm@example.com',
-  avatar: '/avatars/shadcn.jpeg',
-};
-
 type SidebarNode = {
   title: string;
   icon?: LucideIcon;
@@ -102,7 +96,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

@@ -63,17 +63,17 @@ export default function Page() {
     //   },
     // });
 
-    const { data, error } = await authClient.signIn.username(
+    await authClient.signIn.username(
       {
         username: values.username,
         password: values.password,
       },
       {
-        onRequest: (ctx) => {
+        onRequest: () => {
           setIsPending(true);
         },
-        onSuccess: (ctx) => {
-          toast.success('Login Success');
+        onSuccess: () => {
+          router.replace('/dashboard');
         },
         onError: (ctx) => {
           toast.error(ctx.error.message);
