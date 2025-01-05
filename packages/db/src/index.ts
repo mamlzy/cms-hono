@@ -6,15 +6,16 @@ import postgres from 'postgres';
 import { ENV_PATH } from './constant';
 import * as schema from './schema';
 
-dotenv.config({
-  debug: true,
-  path: ENV_PATH,
-});
+// dotenv.config({
+//   debug: true,
+//   path: ENV_PATH,
+// });
 
 class QueryLogger implements Logger {
   // eslint-disable-next-line class-methods-use-this
   logQuery(query: string, params: unknown[]): void {
     console.debug('___QUERY___');
+    console.log('process.env.DATABASE_URL =>', process.env.DATABASE_URL);
     console.debug(query);
     console.debug(params);
     console.debug('___END_QUERY___');

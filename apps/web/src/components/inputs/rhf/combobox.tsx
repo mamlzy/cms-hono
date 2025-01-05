@@ -168,7 +168,7 @@ export default function Combobox<
               >
                 {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
                 <span
-                  className='rounded-md p-1 opacity-50 hover:bg-grayish/50'
+                  className='hover:bg-grayish/50 rounded-md p-1 opacity-50'
                   onClick={onClear}
                 >
                   <X size={16} />

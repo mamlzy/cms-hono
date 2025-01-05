@@ -9,5 +9,5 @@ export default defineConfig({
   clean: true,
   sourcemap: false,
   //! excluding dependencies.
-  external: [],
+  // external: [],
 });

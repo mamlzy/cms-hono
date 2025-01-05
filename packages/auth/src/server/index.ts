@@ -11,14 +11,6 @@ import {
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { organization, username } from 'better-auth/plugins';
-import dotenv from 'dotenv';
-
-import { ENV_PATH } from '../constants';
-
-dotenv.config({
-  debug: true,
-  path: ENV_PATH,
-});
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {

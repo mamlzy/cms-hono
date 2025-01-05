@@ -48,6 +48,9 @@ export function TeamSwitcher() {
   const [showAddOrgDialog, setshowAddOrgDialog] = useState(false);
 
   const { data: organizations } = authClient.useListOrganizations();
+  const session = authClient.useSession();
+
+  console.log('session =>', session);
 
   useEffect(() => {
     if (Array.isArray(organizations) && organizations.length > 0) {

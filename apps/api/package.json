@@ -8,19 +8,28 @@
         "types": "./src/hc.ts",
         "default": "./dist/hc.js"
       }
+    },
+    "./auth": {
+      "import": {
+        "types": "./src/lib/auth.ts",
+        "default": "./dist/lib/auth.js"
+      }
     }
   },
   "scripts": {
-    "build": "tsc && tsc-alias",
+    "build": "pnpm env-prod tsc && tsc-alias",
     "dev": "pnpm --filter @repo/api --parallel \"/^dev:.*/\"",
-    "dev:tsup": "tsup --watch",
-    "dev:tsx": "tsx watch src/index.ts --clear-screen=false",
+    "dev:tsup": "pnpm env-dev tsup --watch",
+    "dev:tsx": "pnpm env-dev tsx watch src/index.ts --clear-screen=false",
     "eslint:fix": "eslint --fix src",
-    "typecheck": "tsc --noEmit --incremental --watch"
+    "typecheck": "tsc --noEmit --incremental --watch",
+    "env-dev": "dotenv -e .env.development -- ",
+    "env-prod": "dotenv -e .env.production -- "
   },
   "dependencies": {
     "@hono/node-server": "^1.13.7",
     "@repo/db": "workspace:*",
+    "@repo/auth": "workspace:*",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
     "hono": "^4.6.15",
@@ -28,6 +37,7 @@
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
+    "dotenv": "^16.4.5",
     "tsc-alias": "^1.8.10",
     "tsup": "^8.3.5",
     "tsx": "^4.19.2"

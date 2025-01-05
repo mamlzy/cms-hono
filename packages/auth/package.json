@@ -1,0 +1,27 @@
+{
+  "name": "@repo/auth",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    "./server": {
+      "types": "./src/server/index.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "eslint": "eslint src",
+    "eslint:fix": "eslint . --fix",
+    "typecheck": "tsc --noEmit --incremental --watch",
+    "clean": "rimraf .turbo node_modules dist"
+  },
+  "dependencies": {
+    "@repo/db": "workspace:*"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "tsup": "^8.3.0"
+  }
+}

@@ -1,9 +1,9 @@
 import path from 'path';
-import { CWD } from '@/constants';
 import { Hono } from 'hono';
 import { nanoid } from 'nanoid';
 
-import { writingFile } from '@/lib/utils';
+import { CWD } from '../constants';
+import { writingFile } from '../lib/utils';
 
 export const testRoutes = new Hono()
   .get('/', (c) => {
