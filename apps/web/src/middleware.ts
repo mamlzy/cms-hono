@@ -8,19 +8,27 @@ type Session = typeof auth.$Infer.Session;
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
-  const { data: session } = await betterFetch<Session>(
-    '/api/auth/get-session',
-    {
-      baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-      headers: {
-        // get the cookie from the request
-        cookie: request.headers.get('cookie') || '',
-      },
-    }
-  );
-
   console.log('⚡ Middleware runs ⚡');
-  console.log('session =>', session);
+  console.log(
+    'process.env.NEXT_PUBLIC_API_BASE_URL =>',
+    process.env.NEXT_PUBLIC_API_BASE_URL
+  );
+  try {
+    const { data: session } = await betterFetch<Session>(
+      '/api/auth/get-session',
+      {
+        baseURL:
+          process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5711',
+        headers: {
+          // get the cookie from the request
+          cookie: request.headers.get('cookie') || '',
+        },
+      }
+    );
+    console.log('session =>', session);
+  } catch (err) {
+    console.log('err =>', err);
+  }
 }
 
 export const config = {

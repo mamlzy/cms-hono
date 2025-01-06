@@ -7,7 +7,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { authClient } from '@/lib/auth-client';
+import { authClient, Organization } from '@/lib/auth-client';
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -33,14 +33,14 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { InputText } from '../inputs/rhf/input-text';
 
-type Organization = {
-  id: string;
-  createdAt: Date;
-  name: string;
-  slug: string;
-  metadata?: any;
-  logo?: string | null | undefined;
-};
+// type Organization = {
+//   id: string;
+//   createdAt: Date;
+//   name: string;
+//   slug: string;
+//   metadata?: any;
+//   logo?: string | null | undefined;
+// };
 
 export function TeamSwitcher() {
   const { isMobile } = useSidebar();
@@ -89,7 +89,7 @@ export function TeamSwitcher() {
               <DropdownMenuLabel className='text-xs text-muted-foreground'>
                 Organizations
               </DropdownMenuLabel>
-              {organizations?.map((org) => (
+              {organizations?.map((org: Organization) => (
                 <DropdownMenuItem
                   key={org.name}
                   onClick={() => setActiveTeam(org)}

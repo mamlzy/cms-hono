@@ -17,27 +17,23 @@
     }
   },
   "scripts": {
-    "build": "pnpm env-prod tsc && tsc-alias",
+    "build": "dotenv-run -e production -- tsc && tsc-alias",
     "dev": "pnpm --filter @repo/api --parallel \"/^dev:.*/\"",
-    "dev:tsup": "pnpm env-dev tsup --watch",
-    "dev:tsx": "pnpm env-dev tsx watch src/index.ts --clear-screen=false",
+    "dev:tsup": "dotenv-run -e development -- tsup --watch",
+    "dev:tsx": "dotenv-run -e development -- tsx watch src/index.ts --clear-screen=false",
     "eslint:fix": "eslint --fix src",
-    "typecheck": "tsc --noEmit --incremental --watch",
-    "env-dev": "dotenv -e .env.development -- ",
-    "env-prod": "dotenv -e .env.production -- "
+    "typecheck": "tsc --noEmit --incremental --watch"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.7",
     "@repo/db": "workspace:*",
     "@repo/auth": "workspace:*",
     "date-fns": "^4.1.0",
-    "dotenv": "^16.4.7",
     "hono": "^4.6.15",
     "nanoid": "^5.0.9"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
-    "dotenv": "^16.4.5",
     "tsc-alias": "^1.8.10",
     "tsup": "^8.3.5",
     "tsx": "^4.19.2"

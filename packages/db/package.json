@@ -24,22 +24,21 @@
     }
   },
   "scripts": {
-    "dev": "tsup --watch",
-    "build": "tsup",
+    "dev": "dotenv-run -e development -- tsup --watch",
+    "build": "dotenv-run -e production -- tsup",
     "eslint": "eslint src",
     "eslint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit --incremental --watch",
     "clean": "rimraf .turbo node_modules dist",
-    "db:generate": "dotenv -e .env.development -- drizzle-kit generate",
-    "db:push": "dotenv -e .env.development -- drizzle-kit push",
-    "db:studio": "dotenv -e .env.development -- drizzle-kit studio",
-    "prod:db:generate": "dotenv -e .env.production -- drizzle-kit generate",
-    "prod:db:push": "dotenv -e .env.production -- drizzle-kit push",
-    "prod:db:studio": "dotenv -e .env.production -- drizzle-kit studio"
+    "db:generate": "dotenv-run -e development -- drizzle-kit generate",
+    "db:push": "dotenv-run -e development -- drizzle-kit push",
+    "db:studio": "dotenv-run -e development -- drizzle-kit studio",
+    "prod:db:generate": "dotenv-run -e production -- drizzle-kit generate",
+    "prod:db:push": "dotenv-run -e production -- drizzle-kit push",
+    "prod:db:studio": "dotenv-run -e production -- drizzle-kit studio"
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.2",
-    "dotenv": "^16.4.5",
     "drizzle-orm": "0.37.0",
     "pg": "^8.13.1",
     "postgres": "^3.4.5",

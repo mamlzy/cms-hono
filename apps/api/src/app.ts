@@ -1,17 +1,10 @@
 import { serveStatic } from '@hono/node-server/serve-static';
 import { auth } from '@repo/auth/server';
-import dotenv from 'dotenv';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 
-import { ENV_PATH } from './constants';
 import { createRoutes } from './routes';
-
-dotenv.config({
-  debug: true,
-  path: ENV_PATH,
-});
 
 const app = new Hono();
 
@@ -33,10 +26,12 @@ app.use(
 );
 app.on(['POST', 'GET'], '/api/auth/**', (c) => auth.handler(c.req.raw));
 
-console.log(
-  '⚡ SERVER ⚡ NEXT_PUBLIC_WEB_BASE_URL =>',
-  process.env.NEXT_PUBLIC_WEB_BASE_URL
-);
+// console.log('CWD =>', CWD);
+// console.log('ENV_PATH =>', ENV_PATH);
+
+console.log('[APP] NODE_ENV =>', process.env.NODE_ENV);
+// console.log('DATABASE_URL =>', process.env.DATABASE_URL);
+// console.log('process.env =>', process.env);
 
 const routes = createRoutes(app);
 
