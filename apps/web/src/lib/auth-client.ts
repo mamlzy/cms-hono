@@ -9,3 +9,5 @@ export const authClient = createAuthClient({
   },
   plugins: [usernameClient(), organizationClient(), nextCookies()],
 });
+
+export type Organization = typeof authClient.$Infer.Organization;

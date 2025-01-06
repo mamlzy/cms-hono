@@ -34,8 +34,7 @@
     "typecheck": "tsc --noEmit --incremental --watch"
   },
   "dependencies": {
-    "@repo/db": "workspace:*",
-    "dotenv": "^16.4.5"
+    "@repo/db": "workspace:*"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
