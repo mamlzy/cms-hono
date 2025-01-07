@@ -16,4 +16,12 @@ module.exports = {
   rules: {
     'turbo/no-undeclared-env-vars': 'off',
   },
+  overrides: [
+    {
+      files: ['.eslintrc.cjs'],
+      parserOptions: {
+        project: null, // Disable project parsing for this file
+      },
+    },
+  ],
 };

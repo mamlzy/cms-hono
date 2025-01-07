@@ -50,19 +50,6 @@ export default function Page() {
     setIsPending(true);
     setErrorMessage(null);
 
-    // loginMutation.mutate(values, {
-    //   onSuccess: () => {
-    //     router.replace('/');
-    //   },
-    //   onError: (err) => {
-    //     if (!config.isProd) console.log('err =>', err);
-    //     setErrorMessage("Email or Password that you've entered is incorrect!");
-    //   },
-    //   onSettled: () => {
-    //     setIsPending(false);
-    //   },
-    // });
-
     await authClient.signIn.username(
       {
         username: values.username,

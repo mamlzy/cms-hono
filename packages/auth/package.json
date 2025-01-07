@@ -15,9 +15,7 @@
     "eslint": "eslint src",
     "eslint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit --incremental --watch",
-    "clean": "rimraf .turbo node_modules dist",
-    "env-dev": "dotenv -e .env.development --",
-    "env-prod": "dotenv -e .env.production --"
+    "clean": "rimraf .turbo node_modules dist"
   },
   "dependencies": {
     "@repo/db": "workspace:*"

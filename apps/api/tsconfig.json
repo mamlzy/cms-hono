@@ -18,5 +18,5 @@
   "tsc-alias": {
     "resolveFullPaths": true
   },
-  "include": ["**/*.ts", ".eslintrc.cjs"]
+  "include": ["**/*.ts"]
 }

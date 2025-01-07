@@ -48,7 +48,7 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
-ENV ENV_PATH /apps/api/.env
+# ENV ENV_PATH /apps/api/.env
 
 # Don't run production as root
 # TODO: don't use root user 

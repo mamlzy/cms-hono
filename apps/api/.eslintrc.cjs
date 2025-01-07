@@ -6,4 +6,12 @@ module.exports = {
   parserOptions: {
     project: true,
   },
+  overrides: [
+    {
+      files: ['.eslintrc.cjs'],
+      parserOptions: {
+        project: null, // Disable project parsing for this file
+      },
+    },
+  ],
 };

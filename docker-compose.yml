@@ -14,6 +14,7 @@ services:
       - cms-network
     depends_on:
       - cms-api
+    env_file: './apps/web/.env.production'
 
   cms-api:
     container_name: cms-api
@@ -33,13 +34,14 @@ services:
     depends_on:
       - cms-db
       - cms-pgadmin
+    env_file: './apps/api/.env.production'
 
   cms-db:
     container_name: cms-db
     image: postgres
     restart: always
     ports:
-      - "5712:5432"
+      - '5712:5432'
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: secret
@@ -47,17 +49,17 @@ services:
       - cms-db:/var/lib/postgresql/data
     networks:
       - cms-network
-      
+
   cms-pgadmin:
     container_name: cms-pgadmin
     image: dpage/pgadmin4
     restart: always
     ports:
-      - "5713:80"
+      - '5713:80'
     environment:
       PGADMIN_DEFAULT_EMAIL: root@gmail.com
       PGADMIN_DEFAULT_PASSWORD: secret
-      PGADMIN_CONFIG_WTF_CSRF_CHECK_DEFAULT: "False"
+      PGADMIN_CONFIG_WTF_CSRF_CHECK_DEFAULT: 'False'
     networks:
       - cms-network
 

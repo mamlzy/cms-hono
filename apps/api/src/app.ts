@@ -26,13 +26,6 @@ app.use(
 );
 app.on(['POST', 'GET'], '/api/auth/**', (c) => auth.handler(c.req.raw));
 
-// console.log('CWD =>', CWD);
-// console.log('ENV_PATH =>', ENV_PATH);
-
-console.log('[APP] NODE_ENV =>', process.env.NODE_ENV);
-// console.log('DATABASE_URL =>', process.env.DATABASE_URL);
-// console.log('process.env =>', process.env);
-
 const routes = createRoutes(app);
 
 type AppType = typeof routes;

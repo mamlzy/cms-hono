@@ -19,6 +19,6 @@
     "skipLibCheck": true,
     "strict": true
   },
-  "include": ["**/*.ts", "**/*.tsx", ".eslintrc.cjs"],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["dist", "node_modules"]
 }

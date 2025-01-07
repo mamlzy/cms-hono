@@ -8,4 +8,12 @@ module.exports = {
   rules: {
     'import/no-cycle': 'off',
   },
+  overrides: [
+    {
+      files: ['.eslintrc.cjs'],
+      parserOptions: {
+        project: null, // Disable project parsing for this file
+      },
+    },
+  ],
 };

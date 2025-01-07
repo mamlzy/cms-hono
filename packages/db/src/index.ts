@@ -8,7 +8,6 @@ class QueryLogger implements Logger {
   // eslint-disable-next-line class-methods-use-this
   logQuery(query: string, params: unknown[]): void {
     console.debug('___QUERY___');
-    console.log('process.env.DATABASE_URL =>', process.env.DATABASE_URL);
     console.debug(query);
     console.debug(params);
     console.debug('___END_QUERY___');
