@@ -1,5 +1,4 @@
 import { organizationClient, usernameClient } from 'better-auth/client/plugins';
-import { nextCookies } from 'better-auth/next-js';
 import { createAuthClient } from 'better-auth/react';
 
 export const authClient = createAuthClient({
@@ -7,7 +6,7 @@ export const authClient = createAuthClient({
   emailAndPassword: {
     enabled: true,
   },
-  plugins: [usernameClient(), organizationClient(), nextCookies()],
+  plugins: [usernameClient(), organizationClient()],
 });
 
 export type Organization = typeof authClient.$Infer.Organization;

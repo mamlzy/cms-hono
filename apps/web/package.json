@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
+    "dev": "dotenv-run -e development -- next dev --turbopack",
+    "build": "dotenv-run -e production -- next build",
     "start": "next start",
     "lint": "next lint",
     "eslint:fix": "eslint --fix src",

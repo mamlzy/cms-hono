@@ -1,5 +1,3 @@
-import { headers } from 'next/headers';
-import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { betterFetch } from '@better-fetch/fetch';
 import type { auth } from '@repo/auth/server';
@@ -17,8 +15,7 @@ export async function middleware(request: NextRequest) {
     const { data: session } = await betterFetch<Session>(
       '/api/auth/get-session',
       {
-        baseURL:
-          process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5711',
+        baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
         headers: {
           // get the cookie from the request
           cookie: request.headers.get('cookie') || '',
