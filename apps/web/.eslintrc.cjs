@@ -15,6 +15,7 @@ module.exports = {
   },
   rules: {
     'turbo/no-undeclared-env-vars': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
   },
   overrides: [
     {

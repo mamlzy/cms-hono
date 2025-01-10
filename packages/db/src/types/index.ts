@@ -7,6 +7,8 @@ import type { Exact } from 'type-fest';
 
 import type * as schema from '../schema';
 
+export * from './category.type';
+
 type TSchema = ExtractTablesWithRelations<typeof schema>;
 
 type QueryConfig<TableName extends keyof TSchema> = DBQueryConfig<

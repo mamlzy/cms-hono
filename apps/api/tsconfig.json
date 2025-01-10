@@ -7,10 +7,11 @@
     "moduleResolution": "bundler",
     "strict": true,
     "skipLibCheck": true,
-    "lib": ["ESNext"],
+    "lib": ["dom", "dom.iterable", "ESNext"],
     "types": ["node"],
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
+    "verbatimModuleSyntax": true,
     "paths": {
       "@/*": ["./src/*"]
     }

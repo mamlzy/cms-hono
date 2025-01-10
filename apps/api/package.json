@@ -8,12 +8,6 @@
         "types": "./src/hc.ts",
         "default": "./dist/hc.js"
       }
-    },
-    "./auth": {
-      "import": {
-        "types": "./src/lib/auth.ts",
-        "default": "./dist/lib/auth.js"
-      }
     }
   },
   "scripts": {
@@ -26,11 +20,13 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.13.7",
-    "@repo/db": "workspace:*",
+    "@hono/zod-validator": "^0.4.2",
     "@repo/auth": "workspace:*",
+    "@repo/db": "workspace:*",
     "date-fns": "^4.1.0",
-    "hono": "^4.6.15",
-    "nanoid": "^5.0.9"
+    "hono": "^4.6.16",
+    "nanoid": "^5.0.9",
+    "superjson": "^2.2.2"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

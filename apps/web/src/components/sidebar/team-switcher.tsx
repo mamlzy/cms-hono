@@ -1,28 +1,19 @@
 'use client';
 
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from 'react';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { ChevronsUpDown, GalleryVerticalEndIcon, Plus } from 'lucide-react';
-import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { z } from 'zod';
 
 import { authClient, Organization } from '@/lib/auth-client';
+import { pathnameWithoutOrg } from '@/lib/pathname-without-org';
+import { CreateOrgDialog } from '@/components/create-org-dialog';
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
 } from '@/components/sidebar/ui/sidebar';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,27 +22,44 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { InputText } from '../inputs/rhf/input-text';
-
-// type Organization = {
-//   id: string;
-//   createdAt: Date;
-//   name: string;
-//   slug: string;
-//   metadata?: any;
-//   logo?: string | null | undefined;
-// };
 
 export function TeamSwitcher() {
+  const router = useRouter();
+  const params = useParams<{ orgSlug: string }>();
+  const pathname = usePathname();
   const { isMobile } = useSidebar();
-  const [activeOrg, setActiveTeam] = useState<Organization | null>(null);
-  const [showAddOrgDialog, setshowAddOrgDialog] = useState(false);
+  const [showCreateOrgDialog, setShowCreateOrgDialog] = useState(false);
 
   const { data: organizations } = authClient.useListOrganizations();
 
+  const [activeOrg, setActiveOrg] = useState<Organization | null>(null);
+  const [activeOrgIsPending, setActiveOrgIsPending] = useState(false);
+
+  const handleSelectOrg = async (org: Organization) => {
+    setActiveOrgIsPending(true);
+
+    const { error } = await authClient.organization.setActive({
+      organizationSlug: org.slug,
+    });
+
+    if (error) {
+      setActiveOrgIsPending(false);
+
+      toast.error(error.message);
+      return;
+    }
+
+    setActiveOrgIsPending(false);
+    router.push(`/${org.slug}/${pathnameWithoutOrg(pathname)}`);
+  };
+
   useEffect(() => {
     if (Array.isArray(organizations) && organizations.length > 0) {
-      setActiveTeam(organizations[0]);
+      const activeOrg = organizations.find(
+        (org) => org.slug === params.orgSlug
+      );
+
+      setActiveOrg(activeOrg);
     }
   }, [organizations]);
 
@@ -89,7 +97,8 @@ export function TeamSwitcher() {
               {organizations?.map((org: Organization) => (
                 <DropdownMenuItem
                   key={org.name}
-                  onClick={() => setActiveTeam(org)}
+                  onClick={() => handleSelectOrg(org)}
+                  disabled={activeOrgIsPending}
                   className='gap-2 p-2'
                 >
                   <div className='flex size-6 items-center justify-center rounded-sm border'>
@@ -101,7 +110,7 @@ export function TeamSwitcher() {
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className='gap-2 p-2'
-                onClick={() => setshowAddOrgDialog(true)}
+                onClick={() => setShowCreateOrgDialog(true)}
               >
                 <div className='flex size-6 items-center justify-center rounded-md border bg-background'>
                   <Plus className='size-4' />
@@ -115,93 +124,10 @@ export function TeamSwitcher() {
         </SidebarMenuItem>
       </SidebarMenu>
 
-      <AddOrgDialog
-        showAddOrgDialog={showAddOrgDialog}
-        setshowAddOrgDialog={setshowAddOrgDialog}
+      <CreateOrgDialog
+        show={showCreateOrgDialog}
+        setShow={setShowCreateOrgDialog}
       />
     </>
-  );
-}
-
-const addOrgSchema = z.object({
-  name: z.string().trim().nonempty(),
-  slug: z.string().trim().nonempty(),
-});
-
-type AddOrgSchema = z.infer<typeof addOrgSchema>;
-
-function AddOrgDialog({
-  showAddOrgDialog,
-  setshowAddOrgDialog,
-}: {
-  showAddOrgDialog: boolean;
-  setshowAddOrgDialog: Dispatch<SetStateAction<boolean>>;
-}) {
-  const [isPending, setIsPending] = useState(false);
-
-  const methods = useForm<AddOrgSchema>({
-    mode: 'all',
-    defaultValues: {
-      name: '',
-      slug: '',
-    },
-    resolver: zodResolver(addOrgSchema),
-  });
-  const { control, handleSubmit, reset } = methods;
-
-  const onSubmit = async (values: AddOrgSchema) => {
-    setIsPending(true);
-
-    try {
-      const { error } = await authClient.organization.create({
-        name: values.name,
-        slug: values.slug,
-        logo: 'https://example.com/logo.png',
-      });
-
-      if (error) {
-        toast.error(error.message);
-        return;
-      }
-
-      toast.success('Organization created');
-      setshowAddOrgDialog(false);
-      reset();
-    } catch (err: any) {
-      console.log('err =>', err);
-
-      toast.error(err.message);
-    } finally {
-      setIsPending(false);
-    }
-  };
-
-  return (
-    <Dialog open={showAddOrgDialog} onOpenChange={setshowAddOrgDialog}>
-      <DialogContent className='sm:max-w-[425px]'>
-        <DialogHeader>
-          <DialogTitle>Add Organization</DialogTitle>
-          <DialogDescription className='sr-only'>
-            add organization form
-          </DialogDescription>
-        </DialogHeader>
-        <FormProvider {...methods}>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className='grid grid-cols-1 gap-4 py-4'
-          >
-            <InputText control={control} name='name' mandatory />
-
-            <InputText control={control} name='slug' mandatory />
-
-            <DialogFooter>
-              <Button type='submit' disabled={isPending}>
-                {isPending ? 'Submitting...' : 'Submit'}
-              </Button>
-            </DialogFooter>
-          </form>
-        </FormProvider>
-      </DialogContent>
-    </Dialog>
   );
 }

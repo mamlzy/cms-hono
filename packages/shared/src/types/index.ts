@@ -1,4 +1,4 @@
-export type Option<T> = { value: T; label: string };
+export type Option<T = string> = { value: T; label: string };
 
 export type PaginationRes = {
   isFirstPage: boolean;

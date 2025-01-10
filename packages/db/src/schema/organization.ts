@@ -5,6 +5,6 @@ export const organizationTable = pgTable('organizations', {
   name: text().notNull(),
   slug: text().unique(),
   logo: text(),
-  createdAt: timestamp().notNull(),
   metadata: text(),
+  createdAt: timestamp().notNull(),
 });

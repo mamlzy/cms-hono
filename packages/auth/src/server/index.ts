@@ -31,3 +31,6 @@ export const auth = betterAuth({
   plugins: [username(), organization()],
   trustedOrigins: [process.env.NEXT_PUBLIC_WEB_BASE_URL!],
 });
+
+export type Session = typeof auth.$Infer.Session;
+export type ActiveOrganization = typeof auth.$Infer.ActiveOrganization;

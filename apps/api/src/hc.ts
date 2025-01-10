@@ -1,9 +1,9 @@
 import { hc } from 'hono/client';
 
-import { AppType } from './app';
+import type { AppRoute } from './app';
 
-const client = hc<AppType>('');
+const client = hc<AppRoute>('');
 export type Client = typeof client;
 
 export const hcWithType = (...args: Parameters<typeof hc>): Client =>
-  hc<AppType>(...args);
+  hc<AppRoute>(...args);

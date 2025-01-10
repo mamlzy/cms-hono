@@ -5,3 +5,6 @@ export * from './verification';
 export * from './organization';
 export * from './member';
 export * from './invitation';
+export * from './post';
+export * from './category';
+export * from './post-to-category';

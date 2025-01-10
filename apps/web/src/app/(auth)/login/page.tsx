@@ -60,7 +60,7 @@ export default function Page() {
           setIsPending(true);
         },
         onSuccess: () => {
-          router.replace('/dashboard');
+          router.replace('/organization');
         },
         onError: (ctx) => {
           toast.error(ctx.error.message);

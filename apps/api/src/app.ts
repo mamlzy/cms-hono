@@ -5,8 +5,9 @@ import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 
 import { createRoutes } from './routes';
+import type { BetterAuthContext } from './types';
 
-const app = new Hono();
+const app = new Hono<BetterAuthContext>();
 
 app.use(
   '*',
@@ -24,10 +25,25 @@ app.use(
       process.env.NODE_ENV === 'production' ? './apps/api/public' : './public',
   })
 );
-app.on(['POST', 'GET'], '/api/auth/**', (c) => auth.handler(c.req.raw));
 
+//! better-auth middldeware
+app.use('*', async (c, next) => {
+  const session = await auth.api.getSession({ headers: c.req.raw.headers });
+
+  if (!session) {
+    c.set('user', null);
+    c.set('session', null);
+    return next();
+  }
+
+  c.set('user', session.user);
+  c.set('session', session.session);
+  return next();
+});
+
+app.on(['POST', 'GET'], '/api/auth/**', (c) => auth.handler(c.req.raw));
 const routes = createRoutes(app);
 
-type AppType = typeof routes;
+type AppRoute = typeof routes;
 
-export { app, type AppType };
+export { app, type AppRoute };

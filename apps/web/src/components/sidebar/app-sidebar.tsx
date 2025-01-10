@@ -2,13 +2,9 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import {
-  ChevronRightIcon,
-  DatabaseIcon,
-  FolderIcon,
-  type LucideIcon,
-} from 'lucide-react';
+import { ChevronRightIcon, FolderIcon, type LucideIcon } from 'lucide-react';
 
+import { authClient } from '@/lib/auth-client';
 import { NavUser } from '@/components/sidebar/nav-user';
 import { TeamSwitcher } from '@/components/sidebar/team-switcher';
 import {
@@ -33,7 +29,7 @@ import {
 
 type SidebarNode = {
   title: string;
-  icon?: LucideIcon;
+  icon?: LucideIcon | string;
 } & (
   | { href?: never; items: SidebarNode[] } // parent
   | { href: string; items?: never } // child
@@ -41,39 +37,15 @@ type SidebarNode = {
 
 const sidebarData = {
   main: [
-    {
-      title: 'components',
-      icon: DatabaseIcon,
-      items: [
-        {
-          title: 'ui',
-          icon: FolderIcon,
-          items: [
-            { title: 'button.tsx', href: '/button' },
-            { title: 'card.tsx', href: '/card' },
-            {
-              title: 'xx',
-              icon: FolderIcon,
-              items: [
-                { title: 'button.tsx', href: '/button' },
-                { title: 'card.tsx', href: '/card' },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    { title: 'header.tsx', href: '/header' },
-    { title: 'footer.tsx', href: '/footer' },
-    {
-      title: 'ux',
-      icon: FolderIcon,
-      items: [
-        { title: 'button.tsx', href: '/button' },
-        { title: 'card.tsx', href: '/card' },
-      ],
-    },
-    { title: '.eslintrc.json', href: '/eslintrc' },
+    { title: 'Category', href: '/category', icon: '🔗' },
+    // {
+    //   title: 'ux',
+    //   icon: FolderIcon,
+    //   items: [
+    //     { title: 'button.tsx', href: '/button' },
+    //     { title: 'card.tsx', href: '/card' },
+    //   ],
+    // },
   ],
 } satisfies Record<string, SidebarNode[]>;
 
@@ -104,6 +76,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 }
 
 function Tree({ item }: { item: SidebarNode }) {
+  const { data: activeOrg } = authClient.useActiveOrganization();
+
+  if (!activeOrg) return null;
+
   if (item.items && item.items?.length > 0) {
     // render a dropdown with nested items
     return (
@@ -136,8 +112,16 @@ function Tree({ item }: { item: SidebarNode }) {
     // render a file link
     return (
       <SidebarMenuButton asChild>
-        <Link href={item.href} className='data-[active=true]:bg-transparent'>
-          {item.icon && <item.icon className='mr-2' />}
+        <Link
+          href={`/${activeOrg.slug}${item.href}`}
+          className='data-[active=true]:bg-transparent'
+        >
+          {item.icon &&
+            (typeof item.icon === 'string' ? (
+              <span>{item.icon}</span> // plain text (emoji)
+            ) : (
+              <item.icon /> // icon
+            ))}
           {item.title}
         </Link>
       </SidebarMenuButton>
