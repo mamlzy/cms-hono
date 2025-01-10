@@ -1,4 +1,5 @@
 import path from 'path';
+import { jsonS } from '@/hono-superjson';
 import type { BetterAuthContext } from '@/types';
 import { Hono } from 'hono';
 import { nanoid } from 'nanoid';
@@ -8,8 +9,8 @@ import { writingFile } from '../lib/utils';
 
 export const testRoutes = new Hono<BetterAuthContext>()
   .get('/', (c) => {
-    return c.json({
-      message: 'Hello World',
+    return jsonS(c, {
+      date: new Date(),
     });
   })
   .post('/', async (c) => {

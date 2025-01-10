@@ -8,6 +8,12 @@
         "types": "./src/hc.ts",
         "default": "./dist/hc.js"
       }
+    },
+    "./hcs": {
+      "import": {
+        "types": "./src/hcs.ts",
+        "default": "./dist/hcs.js"
+      }
     }
   },
   "scripts": {

@@ -1,5 +1,6 @@
 import type { Hono } from 'hono';
 
+import { jsonS } from './hono-superjson';
 import { categoryRoutes } from './modules/category';
 import { organizationRoutes } from './modules/organization';
 import { testRoutes } from './modules/test';
@@ -9,8 +10,8 @@ import type { BetterAuthContext } from './types';
 export const createRoutes = (app: Hono<BetterAuthContext>) => {
   const routes = app
     .get('/', (c) => {
-      return c.json({
-        message: 'OK ✅',
+      return jsonS(c, {
+        date: new Date(),
       });
     })
     .get('/api', (c) => {
