@@ -13,21 +13,10 @@ import {
 } from '@tanstack/react-table';
 import { PlusIcon } from 'lucide-react';
 
-// import { getErrMessage } from '@/lib/get-error-message';
 import { cn } from '@/lib/utils';
 import { DataTable } from '@/components/table/data-table';
-// import { ActionDelete } from '@/components/table/actions/action-delete';
-// import { ActionEdit } from '@/components/table/actions/action-edit';
-// import { ButtonMore } from '@/components/table/buttons/button-more';
-// import { DataTable } from '@/components/table/data-table';
 import InputSearch from '@/components/table/input-search';
-import { Badge } from '@/components/ui/badge';
 import { buttonVariants } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 
 const columnHelper = createColumnHelper<CategoryGetAll>();
 
@@ -42,47 +31,13 @@ const columns = [
     header: () => 'Slug',
     cell: (info) => info.renderValue(),
   }),
-  // columnHelper.display({
-  //   id: 'actions',
-  //   cell: (info) => {
-  //     const { id, slug } = info.row.original;
-
-  //     const utils = trpcClient.useUtils();
-
-  //     const deleteCategoryMutation =
-  //       trpcClient.category.deleteById.useMutation();
-
-  //     return (
-  //       <DropdownMenu>
-  //         <DropdownMenuTrigger asChild>
-  //           <ButtonMore />
-  //         </DropdownMenuTrigger>
-  //         <DropdownMenuContent align='end' className='font-normal'>
-  //           <ActionEdit href={`/categories/edit/${slug}`} />
-  //           <ActionDelete
-  //             onDelete={({ setOpen }) => {
-  //               deleteCategoryMutation.mutate(
-  //                 { id },
-  //                 {
-  //                   onSuccess: () => {
-  //                     utils.category.invalidate();
-  //                     toast.success('Category deleted successfully');
-
-  //                     setOpen(false);
-  //                   },
-  //                   onError: (err) => {
-  //                     toast.error(`Error, ${getErrMessage(err)}`);
-  //                   },
-  //                 }
-  //               );
-  //             }}
-  //             isPending={deleteCategoryMutation.isPending}
-  //           />
-  //         </DropdownMenuContent>
-  //       </DropdownMenu>
-  //     );
-  //   },
-  // }),
+  columnHelper.accessor('createdAt', {
+    header: () => 'Created At',
+    cell: (info) => {
+      console.log('info =>', info.row.original);
+      return info.renderValue()?.getFullYear();
+    },
+  }),
 ];
 
 const searchByOptions = [

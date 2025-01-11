@@ -1,8 +1,10 @@
-import { hc } from '@/lib/hono-client';
+import { hc, hcsClient } from '@/lib/hono-client';
 
 const getAll = async () => {
-  const res = await hc.api.categories.$get();
+  const res = await hcsClient.api.categories.$get();
   const data = await res.json();
+
+  console.log('data =>', data);
 
   return data.data;
 };

@@ -1,8 +1,6 @@
 import { hc } from 'hono/client';
 import superjson from 'superjson';
 
-import type { AppRoute } from './app';
-
 export type { AppRoute } from './app';
 
 export type Callback = (opts: { path: string[]; args: any[] }) => unknown;

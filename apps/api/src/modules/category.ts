@@ -1,10 +1,12 @@
-import type { BetterAuthContext } from '@/types';
 import { zValidator } from '@hono/zod-validator';
 import { db, eq } from '@repo/db';
 import { categoryTable } from '@repo/db/schema';
 import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import { z } from 'zod';
+
+import { jsonS } from '../hono-superjson';
+import type { BetterAuthContext } from '../types';
 
 export const categoryRoutes = new Hono<BetterAuthContext>()
   //! get all
@@ -17,7 +19,7 @@ export const categoryRoutes = new Hono<BetterAuthContext>()
 
     const categories = await db.query.categoryTable.findMany();
 
-    return c.json({ data: categories });
+    return jsonS(c, { data: categories });
   })
   //! get by category id
   .get('/:categoryId', async (c) => {

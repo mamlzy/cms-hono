@@ -1,11 +1,11 @@
 import path from 'path';
-import { jsonS } from '@/hono-superjson';
-import type { BetterAuthContext } from '@/types';
 import { Hono } from 'hono';
 import { nanoid } from 'nanoid';
 
 import { CWD } from '../constants';
+import { jsonS } from '../hono-superjson';
 import { writingFile } from '../lib/utils';
+import type { BetterAuthContext } from '../types';
 
 export const testRoutes = new Hono<BetterAuthContext>()
   .get('/', (c) => {
