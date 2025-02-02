@@ -17,3 +17,6 @@ export const userTable = pgTable('users', {
   updatedAt: timestamp().notNull(),
   username: text().unique(),
 });
+
+export type User = typeof userTable.$inferSelect;
+export type UserCreateInput = typeof userTable.$inferInsert;

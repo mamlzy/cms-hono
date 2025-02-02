@@ -1,7 +1,7 @@
 'use client';
 
 import { lowerCase, startCase } from '@repo/shared/lib/utils';
-import {
+import type {
   Control,
   ControllerRenderProps,
   FieldValues,

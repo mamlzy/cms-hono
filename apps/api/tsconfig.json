@@ -11,10 +11,7 @@
     "types": ["node"],
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
-    "verbatimModuleSyntax": true,
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "verbatimModuleSyntax": true
   },
   "tsc-alias": {
     "resolveFullPaths": true

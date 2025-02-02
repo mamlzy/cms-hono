@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "type": "module",
   "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    },
     "./server": {
       "types": "./src/server/index.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js"
+      "default": "./dist/server/index.js"
     }
   },
   "scripts": {
@@ -18,7 +21,10 @@
     "clean": "rimraf .turbo node_modules dist"
   },
   "dependencies": {
-    "@repo/db": "workspace:*"
+    "@repo/db": "workspace:*",
+    "@oslojs/crypto": "^1.0.1",
+    "@oslojs/encoding": "^1.1.0",
+    "hono": "4.6.16"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

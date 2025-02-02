@@ -1,8 +1,8 @@
-import { auth } from '@repo/auth/server';
+import type { Session, User } from '@repo/db/schema';
 
-export type BetterAuthContext = {
+export type AuthContext = {
   Variables: {
-    user: typeof auth.$Infer.Session.user | null;
-    session: typeof auth.$Infer.Session.session | null;
+    user: User | null;
+    session: Session | null;
   };
 };

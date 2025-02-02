@@ -16,3 +16,6 @@ export const sessionTable = pgTable('sessions', {
     .references(() => userTable.id),
   activeOrganizationId: text(),
 });
+
+export type Session = typeof sessionTable.$inferSelect;
+export type SessionCreateInput = typeof sessionTable.$inferInsert;

@@ -1,16 +1,11 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import {
-  BadgeCheck,
-  Bell,
-  ChevronsUpDown,
-  CreditCard,
-  LogOut,
-  Sparkles,
-} from 'lucide-react';
+import { BadgeCheckIcon, ChevronsUpDownIcon, LogOutIcon } from 'lucide-react';
+import { useTheme } from 'next-themes';
 
-import { authClient } from '@/lib/auth-client';
+import { useLogoutMutation } from '@/hooks/react-query/auth.query';
+import { useSession } from '@/hooks/use-session';
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -27,18 +22,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 
 export function NavUser() {
   const router = useRouter();
+  const session = useSession();
   const { isMobile } = useSidebar();
-  const { data: session } = authClient.useSession();
+  const { theme, setTheme } = useTheme();
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
+
+  const logoutMutation = useLogoutMutation();
 
   const handleSignOut = async () => {
-    await authClient.signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          router.push('/login');
-        },
+    logoutMutation.mutate(undefined, {
+      onSuccess: () => {
+        router.push('/login');
       },
     });
   };
@@ -54,18 +56,18 @@ export function NavUser() {
             >
               <Avatar className='size-8 rounded-lg'>
                 <AvatarImage
-                  src={session?.user.image || '/avatars/shadcn.jpeg'}
-                  alt={session?.user.name}
+                  src={session?.user?.image || '/avatars/shadcn.jpeg'}
+                  alt={session?.user?.name}
                 />
                 <AvatarFallback className='rounded-lg'>CN</AvatarFallback>
               </Avatar>
               <div className='grid flex-1 text-left text-sm leading-tight'>
                 <span className='truncate font-semibold'>
-                  {session?.user.name}
+                  {session?.user?.name}
                 </span>
-                <span className='truncate text-xs'>{session?.user.email}</span>
+                <span className='truncate text-xs'>{session?.user?.email}</span>
               </div>
-              <ChevronsUpDown className='ml-auto size-4' />
+              <ChevronsUpDownIcon className='ml-auto size-4' />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -78,17 +80,17 @@ export function NavUser() {
               <div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>
                 <Avatar className='size-8 rounded-lg'>
                   <AvatarImage
-                    src={session?.user.image || '/avatars/shadcn.jpeg'}
-                    alt={session?.user.name}
+                    src={session?.user?.image || '/avatars/shadcn.jpeg'}
+                    alt={session?.user?.name}
                   />
                   <AvatarFallback className='rounded-lg'>CN</AvatarFallback>
                 </Avatar>
                 <div className='grid flex-1 text-left text-sm leading-tight'>
                   <span className='truncate font-semibold'>
-                    {session?.user.name}
+                    {session?.user?.name}
                   </span>
                   <span className='truncate text-xs'>
-                    {session?.user.email}
+                    {session?.user?.email}
                   </span>
                 </div>
               </div>
@@ -96,28 +98,29 @@ export function NavUser() {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
+                <BadgeCheckIcon />
+                Account
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
+              <DropdownMenuItem
+                onClick={(e) => e.preventDefault()}
+                className='flex'
+              >
+                <Label htmlFor='theme-switcher' className='font-normal'>
+                  Dark theme
+                </Label>{' '}
+                <Switch
+                  id='theme-switcher'
+                  checked={theme === 'dark'}
+                  onCheckedChange={toggleTheme}
+                />
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleSignOut}>
-              <LogOut />
+              <LogOutIcon />
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>

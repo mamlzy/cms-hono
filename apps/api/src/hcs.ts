@@ -23,7 +23,7 @@ const createProxy = (callback: Callback, path: string[]) => {
   return proxy;
 };
 
-export const hcs: typeof hc = (baseUrl, options) =>
+export const hcsWithType: typeof hc = (baseUrl, options) =>
   createProxy(({ path, args }) => {
     let client: any = hc(baseUrl, options);
 
@@ -50,14 +50,3 @@ export const hcs: typeof hc = (baseUrl, options) =>
 
     return result;
   }, []) as any;
-
-/*
- * This code below has correct types, but not in "apps/web"
- */
-// type AppRouteClone = AppRoute;
-
-// const hcsClient = hcs<AppRouteClone>(process.env.NEXT_PUBLIC_API_BASE_URL!, {
-//   init: { credentials: 'include' },
-// });
-
-// const test = await hcsClient.api.test.$get(); //! correct types

@@ -34,8 +34,12 @@ export function DataTable({ tableInstance: table }: Props) {
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
+                  const width = header.column.columnDef.meta?.width || 'auto'; // Get the width from column meta
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      key={header.id}
+                      style={{ width }} // Apply the width dynamically
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -55,14 +59,21 @@ export function DataTable({ tableInstance: table }: Props) {
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+                  {row.getVisibleCells().map((cell) => {
+                    const width = cell.column.columnDef.meta?.width || 'auto'; // Get the width from column meta
+
+                    return (
+                      <TableCell
+                        key={cell.id}
+                        style={{ width }} // Apply the width dynamically
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
               ))
             ) : (
@@ -96,7 +107,6 @@ export function DataTable({ tableInstance: table }: Props) {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {/* eslint-disable-next-line @typescript-eslint/no-shadow */}
                 {[10, 20, 30, 40, 50].map((pageSize) => (
                   <SelectItem key={pageSize} value={String(pageSize)}>
                     Show {pageSize}

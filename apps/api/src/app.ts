@@ -1,19 +1,20 @@
 import { serveStatic } from '@hono/node-server/serve-static';
-import { auth } from '@repo/auth/server';
+import { getSessionToken, validateSessionToken } from '@repo/auth';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 
 import { createRoutes } from './routes';
-import type { BetterAuthContext } from './types';
+import type { AuthContext } from './types';
 
-const app = new Hono<BetterAuthContext>();
+const app = new Hono<AuthContext>();
 
 app.use(
   '*',
   cors({
     origin: [process.env.NEXT_PUBLIC_WEB_BASE_URL!],
     credentials: true,
+    exposeHeaders: ['x-superjson'],
   })
 );
 
@@ -26,22 +27,32 @@ app.use(
   })
 );
 
-//! better-auth middldeware
-app.use('*', async (c, next) => {
-  const session = await auth.api.getSession({ headers: c.req.raw.headers });
+//! auth middldeware
+app.use('/api/*', async (c, next) => {
+  const sessionToken = getSessionToken(c);
 
-  if (!session) {
+  if (!sessionToken) {
     c.set('user', null);
     c.set('session', null);
+
+    return next();
+  }
+
+  const session = await validateSessionToken(sessionToken);
+
+  if (!session.session || !session.user) {
+    c.set('user', null);
+    c.set('session', null);
+
     return next();
   }
 
   c.set('user', session.user);
   c.set('session', session.session);
+
   return next();
 });
 
-app.on(['POST', 'GET'], '/api/auth/**', (c) => auth.handler(c.req.raw));
 const routes = createRoutes(app);
 
 type AppRoute = typeof routes;

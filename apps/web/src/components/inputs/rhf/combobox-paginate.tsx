@@ -1,8 +1,11 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { lowerCase, startCase } from '@repo/shared/lib/utils';
-import { Res } from '@repo/shared/types';
-import { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
+import type { Res } from '@repo/shared/types';
+import type {
+  InfiniteData,
+  UseInfiniteQueryResult,
+} from '@tanstack/react-query';
 import {
   CheckIcon,
   ChevronDown,
@@ -11,7 +14,12 @@ import {
   SearchIcon,
   X,
 } from 'lucide-react';
-import { Control, FieldValues, Path, useController } from 'react-hook-form';
+import {
+  useController,
+  type Control,
+  type FieldValues,
+  type Path,
+} from 'react-hook-form';
 import { useInView } from 'react-intersection-observer';
 import { toast } from 'sonner';
 

@@ -54,6 +54,12 @@ export default function Home() {
     queryKey: ['users'],
     queryFn: async () => {
       const res = await hc.api.users.$get();
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message);
+      }
+
       const data = await res.json();
 
       return data;
@@ -77,8 +83,8 @@ export default function Home() {
         Fetch Users
       </Button>
       {usersQuery.isLoading && <li>Loading...</li>}
-      {usersQuery.data &&
-        usersQuery.data.data?.map((user) => (
+      {usersQuery.isSuccess &&
+        usersQuery.data.data.map((user) => (
           <ul key={user.id} className='mb-5'>
             <li key={user.id}>{user.name}</li>
             <li>{user.email}</li>

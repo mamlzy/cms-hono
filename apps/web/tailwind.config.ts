@@ -3,6 +3,7 @@
 import svgToDataUri from 'mini-svg-data-uri';
 import type { Config } from 'tailwindcss';
 import { fontFamily } from 'tailwindcss/defaultTheme';
+import plugin from 'tailwindcss/plugin';
 
 const {
   default: flattenColorPalette,
@@ -81,7 +82,14 @@ export default {
   },
   plugins: [
     require('tailwindcss-animate'),
-    ({ matchUtilities, theme }: any) => {
+    require('@tailwindcss/typography'),
+    plugin(({ matchUtilities, theme, addComponents }) => {
+      addComponents({
+        '.toolbar-button-active': {
+          '@apply !bg-primary text-primary-foreground hover:!bg-primary/90 hover:!text-primary-foreground':
+            {},
+        },
+      });
       matchUtilities(
         {
           'bg-grid': (value: any) => ({
@@ -100,8 +108,11 @@ export default {
             )}")`,
           }),
         },
-        { values: flattenColorPalette(theme('backgroundColor')), type: 'color' }
+        {
+          values: flattenColorPalette(theme('backgroundColor')),
+          type: 'color',
+        }
       );
-    },
+    }),
   ],
 } satisfies Config;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { lowerCase, startCase } from '@repo/shared/lib/utils';
 import { Eye, EyeOff } from 'lucide-react';
-import {
+import type {
   Control,
   ControllerRenderProps,
   FieldValues,

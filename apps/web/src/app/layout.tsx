@@ -3,6 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { geistMono, geistSans } from '@/fonts';
 
+import ProgressBarProvider from '@/components/providers/progress-bar-provider';
 import { ReactQueryProvider } from '@/components/providers/react-query-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
@@ -29,7 +30,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ReactQueryProvider>{children}</ReactQueryProvider>
+          <ReactQueryProvider>
+            <ProgressBarProvider>{children}</ProgressBarProvider>
+          </ReactQueryProvider>
           <Toaster richColors position='top-right' offset={15} closeButton />
         </ThemeProvider>
       </body>

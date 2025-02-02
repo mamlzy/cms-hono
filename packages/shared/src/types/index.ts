@@ -1,3 +1,5 @@
+export * from './utils.type';
+
 export type Option<T = string> = { value: T; label: string };
 
 export type PaginationRes = {
@@ -16,11 +18,3 @@ export type Res<TData> = {
   error: Error;
   data: TData;
 } & (TData extends Array<any> ? { pagination?: PaginationRes } : {});
-
-export type OmitStrict<T, K extends keyof T> = T extends any
-  ? Pick<T, Exclude<keyof T, K>>
-  : never;
-
-export type Nullable<T> = {
-  [P in keyof T]: T[P] | null;
-};

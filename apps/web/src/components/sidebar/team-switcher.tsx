@@ -2,12 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, usePathname, useRouter } from 'next/navigation';
+import type { Organization } from '@repo/db/schema';
 import { ChevronsUpDown, GalleryVerticalEndIcon, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { authClient, Organization } from '@/lib/auth-client';
+import {
+  useListOrganizations,
+  useSetActiveOrganizationMutation,
+} from '@/hooks/react-query/organization.query';
 import { pathnameWithoutOrg } from '@/lib/pathname-without-org';
-import { CreateOrgDialog } from '@/components/create-org-dialog';
+import { CreateOrganizationDialog } from '@/components/create-org-dialog';
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -23,41 +27,38 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-export function TeamSwitcher() {
+export function OrganizationSwitcher() {
   const router = useRouter();
-  const params = useParams<{ orgSlug: string }>();
+  const params = useParams<{ organizationId: string }>();
   const pathname = usePathname();
   const { isMobile } = useSidebar();
-  const [showCreateOrgDialog, setShowCreateOrgDialog] = useState(false);
+  const [showCreateOrganizationDialog, setShowCreateOrganizationDialog] =
+    useState(false);
 
-  const { data: organizations } = authClient.useListOrganizations();
+  const { data: organizations } = useListOrganizations();
+  const setActiveOrganizationMutation = useSetActiveOrganizationMutation();
 
   const [activeOrg, setActiveOrg] = useState<Organization | null>(null);
-  const [activeOrgIsPending, setActiveOrgIsPending] = useState(false);
 
-  const handleSelectOrg = async (org: Organization) => {
-    setActiveOrgIsPending(true);
-
-    const { error } = await authClient.organization.setActive({
-      organizationSlug: org.slug,
-    });
-
-    if (error) {
-      setActiveOrgIsPending(false);
-
-      toast.error(error.message);
-      return;
-    }
-
-    setActiveOrgIsPending(false);
-    router.push(`/${org.slug}/${pathnameWithoutOrg(pathname)}`);
+  const handleSelectOrg = async (organization: Organization) => {
+    setActiveOrganizationMutation.mutate(
+      { organizationId: organization.id! },
+      {
+        onSuccess: () => {
+          router.push(`/${organization.id}/${pathnameWithoutOrg(pathname)}`);
+        },
+        onError: (err) => {
+          toast.error(err.message);
+        },
+      }
+    );
   };
 
   useEffect(() => {
     if (Array.isArray(organizations) && organizations.length > 0) {
       const activeOrg = organizations.find(
-        (org) => org.slug === params.orgSlug
-      );
+        (org) => org.id === params.organizationId
+      )!;
 
       setActiveOrg(activeOrg);
     }
@@ -94,11 +95,11 @@ export function TeamSwitcher() {
               <DropdownMenuLabel className='text-xs text-muted-foreground'>
                 Organizations
               </DropdownMenuLabel>
-              {organizations?.map((org: Organization) => (
+              {organizations?.map((org) => (
                 <DropdownMenuItem
                   key={org.name}
                   onClick={() => handleSelectOrg(org)}
-                  disabled={activeOrgIsPending}
+                  disabled={setActiveOrganizationMutation.isPending}
                   className='gap-2 p-2'
                 >
                   <div className='flex size-6 items-center justify-center rounded-sm border'>
@@ -110,7 +111,7 @@ export function TeamSwitcher() {
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className='gap-2 p-2'
-                onClick={() => setShowCreateOrgDialog(true)}
+                onClick={() => setShowCreateOrganizationDialog(true)}
               >
                 <div className='flex size-6 items-center justify-center rounded-md border bg-background'>
                   <Plus className='size-4' />
@@ -124,9 +125,9 @@ export function TeamSwitcher() {
         </SidebarMenuItem>
       </SidebarMenu>
 
-      <CreateOrgDialog
-        show={showCreateOrgDialog}
-        setShow={setShowCreateOrgDialog}
+      <CreateOrganizationDialog
+        show={showCreateOrganizationDialog}
+        setShow={setShowCreateOrganizationDialog}
       />
     </>
   );

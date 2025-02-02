@@ -5,11 +5,11 @@ import * as LabelPrimitive from '@radix-ui/react-label';
 import { Slot } from '@radix-ui/react-slot';
 import {
   Controller,
-  ControllerProps,
-  FieldPath,
-  FieldValues,
   FormProvider,
   useFormContext,
+  type ControllerProps,
+  type FieldPath,
+  type FieldValues,
 } from 'react-hook-form';
 
 import { cn } from '@/lib/utils';
@@ -82,7 +82,7 @@ const FormItem = React.forwardRef<
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
     <FormItemContext.Provider value={{ id }}>
-      <div ref={ref} className={cn('space-y-2', className)} {...props} />
+      <div ref={ref} className={cn('', className)} {...props} />
     </FormItemContext.Provider>
   );
 });

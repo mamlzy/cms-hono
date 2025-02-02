@@ -2,17 +2,19 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { authRequest } from '@/requests/auth.request';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { AlertCircleIcon, Moon, Sun, WebhookIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm, type SubmitHandler } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { authClient } from '@/lib/auth-client';
+import { useIsMounted } from '@/hooks/use-is-mounted';
 import { michroma } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
-import { useIsMounted } from '@/components/hooks/use-is-mounted';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -44,26 +46,34 @@ export default function Page() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
 
+  const loginMutation = useMutation({
+    mutationFn: authRequest.login,
+  });
+
   const onSubmit: SubmitHandler<z.infer<typeof loginSchema>> = async (
     values
   ) => {
     setIsPending(true);
     setErrorMessage(null);
 
-    await authClient.signIn.username(
+    loginMutation.mutate(
       {
         username: values.username,
         password: values.password,
       },
       {
-        onRequest: () => {
-          setIsPending(true);
-        },
         onSuccess: () => {
           router.replace('/organization');
         },
-        onError: (ctx) => {
-          toast.error(ctx.error.message);
+        onError: (err) => {
+          console.log('err =>', err);
+
+          if (err instanceof AxiosError) {
+            toast.error(err.response?.data);
+            return;
+          }
+
+          toast.error(err.message);
         },
       }
     );

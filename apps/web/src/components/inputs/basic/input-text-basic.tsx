@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, RefObject } from 'react';
+import { forwardRef, type RefObject } from 'react';
 import { lowerCase } from '@repo/shared/lib/utils';
 
 import { cn } from '@/lib/utils';

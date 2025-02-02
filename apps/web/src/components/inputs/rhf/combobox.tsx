@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { lowerCase, startCase } from '@repo/shared/lib/utils';
 import { ChevronDown, X } from 'lucide-react';
 import {
-  Control,
-  FieldValues,
-  Path,
   useController,
   useFormContext,
+  type Control,
+  type FieldValues,
+  type Path,
 } from 'react-hook-form';
 
 import { cn } from '@/lib/utils';
@@ -48,7 +48,7 @@ type Props<T extends FieldValues, K extends Record<string, any>> = {
     }
 );
 
-export default function Combobox<
+export function InputCombobox<
   T extends FieldValues,
   K extends Record<string, any>,
 >({

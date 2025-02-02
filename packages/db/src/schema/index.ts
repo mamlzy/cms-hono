@@ -8,3 +8,6 @@ export * from './invitation';
 export * from './post';
 export * from './category';
 export * from './post-to-category';
+export * from './media';
+export * from './faq';
+export * from './customer';

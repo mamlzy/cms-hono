@@ -1,4 +1,4 @@
-import { Logger } from 'drizzle-orm';
+import type { Logger } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 
@@ -19,7 +19,7 @@ const client = postgres(process.env.DATABASE_URL!);
 export const db = drizzle({
   client,
   casing: 'snake_case',
-  logger: new QueryLogger(),
+  // logger: new QueryLogger(),
   schema,
 });
 

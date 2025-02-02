@@ -1,5 +1,5 @@
 import { existsSync } from 'fs';
-import { mkdir, writeFile } from 'fs/promises';
+import { mkdir, unlink, writeFile } from 'fs/promises';
 
 export const writingFile = async (
   path: string,
@@ -15,4 +15,16 @@ export const writingFile = async (
   await writeFile(`${path}/${fileName}`, data);
 
   return 'Success';
+};
+
+export const deleteFile = async (filePath: string): Promise<string> => {
+  // Check if the file exists
+  if (!existsSync(filePath)) {
+    throw new Error(`File does not exist.`);
+  }
+
+  // Delete the file
+  await unlink(filePath);
+
+  return 'File deleted.';
 };

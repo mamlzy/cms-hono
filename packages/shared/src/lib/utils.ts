@@ -1,4 +1,4 @@
-import { PaginationRes } from '../types/index.js';
+import type { PaginationRes } from '../types/index';
 
 export const generateArray = (length: number) => {
   if (!length) throw new Error('"length" parameter is required');

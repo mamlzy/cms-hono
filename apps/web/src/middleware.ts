@@ -1,8 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { betterFetch } from '@better-fetch/fetch';
-import type { ActiveOrganization, Session } from '@repo/auth/server';
-
-import { Organization } from './lib/auth-client';
+import type { SessionValidationResult } from '@repo/auth';
+import type { Organization } from '@repo/db/schema';
 
 export async function middleware(req: NextRequest) {
   console.log('⚡ Middleware runs ⚡');
@@ -11,24 +10,24 @@ export async function middleware(req: NextRequest) {
 
   const { pathname: fullPathname } = req.nextUrl;
 
-  let session: Session | null = null;
+  let session: SessionValidationResult | null = null;
   const authRoutes = ['/login'];
+  const publicRoutes = ['/test'];
 
   const isAuthRoute = authRoutes.includes(fullPathname);
-  const isProtectedRoutes = !isAuthRoute;
+  const isProtectedRoutes =
+    !isAuthRoute && !publicRoutes.includes(fullPathname);
   const isOrgRoute = fullPathname === '/organization';
 
   try {
-    const { data: sessionResponse, error } = await betterFetch<Session>(
-      '/api/auth/get-session',
-      {
+    const { data: sessionResponse, error } =
+      await betterFetch<SessionValidationResult>('/api/auth/get-session', {
         baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
         headers: {
           // get the cookie from the request
           cookie: req.headers.get('cookie') || '',
         },
-      }
-    );
+      });
 
     if (!error) {
       session = sessionResponse;
@@ -44,7 +43,7 @@ export async function middleware(req: NextRequest) {
   }
 
   if (isProtectedRoutes) {
-    if (!session) {
+    if (!session?.session || !session?.user) {
       return NextResponse.redirect(new URL('/login', req.url));
     }
 
@@ -59,17 +58,22 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL(`/organization`, req.url));
       }
 
+      const organization = await getOrganizationById(req, activeOrganizationId);
+
+      if (!organization) {
+        return NextResponse.redirect(new URL(`/organization`, req.url));
+      }
+
       return NextResponse.redirect(
-        new URL(`/${session.session.activeOrganizationId}/dashboard`, req.url)
+        new URL(`/${organization.id}/dashboard`, req.url)
       );
     }
 
     // Match the organization URL pattern
-    const orgMatch = fullPathname.match(/^\/([^/]+)(\/.*)?/);
-    const orgSlug = orgMatch ? orgMatch[1] : null;
-    // const pathname = orgMatch?.[2];
+    const organizationMatch = fullPathname.match(/^\/([^/]+)(\/.*)?/);
+    const organizationId = organizationMatch ? organizationMatch[1] : null;
 
-    const isValidOrg = await isValidOrgFn(req, orgSlug);
+    const isValidOrg = await getValidOrganization({ req, organizationId });
 
     if (!isValidOrg) {
       return NextResponse.rewrite(new URL('/not-found', req.url));
@@ -83,23 +87,18 @@ export async function middleware(req: NextRequest) {
      * if activeOrganizationId not equal to current organization page,
      * set active organization to current organization page
      */
-    console.log({ activeOrganizationId, orgSlug });
-    if (activeOrganizationId !== orgSlug) {
-      const { data, error } = await betterFetch<ActiveOrganization>(
-        '/api/auth/organization/set-active',
-        {
-          baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-          method: 'POST',
-          headers: {
-            // get the cookie from the request
-            cookie: req.headers.get('cookie') || '',
-          },
-          body: {
-            organizationSlug: orgSlug,
-          },
-        }
-      );
-      console.log({ data, error });
+    if (activeOrganizationId !== organizationId) {
+      await betterFetch<Organization>('/api/auth/organization/set-active', {
+        baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+        method: 'POST',
+        headers: {
+          // get the cookie from the request
+          cookie: req.headers.get('cookie') || '',
+        },
+        body: {
+          organizationId,
+        },
+      });
     }
   }
 
@@ -123,11 +122,14 @@ export const config = {
   ],
 };
 
-async function isValidOrgFn(req: NextRequest, orgSlug: string | null) {
-  if (!orgSlug) return false;
+async function getOrganizationById(
+  req: NextRequest,
+  organizationId: string | null
+) {
+  if (!organizationId) return false;
 
-  const { data: org } = await betterFetch<Organization>(
-    `/api/organizations/${orgSlug}`,
+  const { data } = await betterFetch<{ data: Organization }>(
+    `/api/organizations/id/${organizationId}`,
     {
       baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
       headers: {
@@ -136,7 +138,27 @@ async function isValidOrgFn(req: NextRequest, orgSlug: string | null) {
     }
   );
 
-  console.log('org =>', org);
+  return data?.data;
+}
 
-  return !!org;
+async function getValidOrganization({
+  req,
+  organizationId,
+}: {
+  req: NextRequest;
+  organizationId: string | null;
+}) {
+  if (!organizationId) return false;
+
+  const { data } = await betterFetch<{ data: Organization }>(
+    `/api/organizations/id/${organizationId}`,
+    {
+      baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+      headers: {
+        cookie: req.headers.get('cookie') || '',
+      },
+    }
+  );
+
+  return data?.data;
 }

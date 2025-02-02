@@ -4,9 +4,9 @@ import * as React from 'react';
 import Link from 'next/link';
 import { ChevronRightIcon, FolderIcon, type LucideIcon } from 'lucide-react';
 
-import { authClient } from '@/lib/auth-client';
+import { useActiveOrganization } from '@/hooks/react-query/organization.query';
 import { NavUser } from '@/components/sidebar/nav-user';
-import { TeamSwitcher } from '@/components/sidebar/team-switcher';
+import { OrganizationSwitcher } from '@/components/sidebar/team-switcher';
 import {
   Sidebar,
   SidebarContent,
@@ -38,6 +38,9 @@ type SidebarNode = {
 const sidebarData = {
   main: [
     { title: 'Category', href: '/category', icon: '🔗' },
+    { title: 'Post', href: '/post', icon: '📝' },
+    { title: 'Faq', href: '/faq', icon: '🤔' },
+    { title: 'Customer', href: '/customer', icon: '🤝' },
     // {
     //   title: 'ux',
     //   icon: FolderIcon,
@@ -53,7 +56,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible='icon' {...props}>
       <SidebarHeader>
-        <TeamSwitcher />
+        <OrganizationSwitcher />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -76,9 +79,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 }
 
 function Tree({ item }: { item: SidebarNode }) {
-  const { data: activeOrg } = authClient.useActiveOrganization();
+  const { data: activeOrganization } = useActiveOrganization();
 
-  if (!activeOrg) return null;
+  if (!activeOrganization) return null;
 
   if (item.items && item.items?.length > 0) {
     // render a dropdown with nested items
@@ -113,7 +116,7 @@ function Tree({ item }: { item: SidebarNode }) {
     return (
       <SidebarMenuButton asChild>
         <Link
-          href={`/${activeOrg.slug}${item.href}`}
+          href={`/${activeOrganization.id}${item.href}`}
           className='data-[active=true]:bg-transparent'
         >
           {item.icon &&

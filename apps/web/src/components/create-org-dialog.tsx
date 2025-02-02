@@ -1,10 +1,13 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { type Dispatch, type SetStateAction } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  createOrganizationSchema,
+  type CreateOrganizationSchema,
+} from '@repo/shared/schemas';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { z } from 'zod';
 
-import { authClient } from '@/lib/auth-client';
+import { useCreateOrganizationMutation } from '@/hooks/react-query/organization.query';
 import { InputText } from '@/components/inputs/rhf/input-text';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,14 +19,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
-const addOrgSchema = z.object({
-  name: z.string().trim().nonempty(),
-  slug: z.string().trim().nonempty(),
-});
-
-type AddOrgSchema = z.infer<typeof addOrgSchema>;
-
-export function CreateOrgDialog({
+export function CreateOrganizationDialog({
   show,
   setShow,
   onCreateSuccess,
@@ -32,57 +28,44 @@ export function CreateOrgDialog({
   setShow: Dispatch<SetStateAction<boolean>>;
   onCreateSuccess?: () => void;
 }) {
-  const [isPending, setIsPending] = useState(false);
-
-  const methods = useForm<AddOrgSchema>({
+  const methods = useForm<CreateOrganizationSchema>({
     mode: 'all',
     defaultValues: {
       name: '',
-      slug: '',
+      logo: 'https://placehold.co/320x320',
+      metadata: JSON.stringify({
+        primaryHexColor: '03aa4b',
+      }),
     },
-    resolver: zodResolver(addOrgSchema),
+    resolver: zodResolver(createOrganizationSchema),
   });
   const { control, handleSubmit, reset } = methods;
 
-  const onSubmit = async (values: AddOrgSchema) => {
-    setIsPending(true);
+  const createOrganizationMutation = useCreateOrganizationMutation();
 
-    try {
-      const { error } = await authClient.organization.create({
-        name: values.name,
-        slug: values.slug,
-        logo: 'https://example.com/logo.png',
-        metadata: {
-          primaryHexColor: '03aa4b',
-        },
-      });
+  const onSubmit = async (values: CreateOrganizationSchema) => {
+    createOrganizationMutation.mutate(values, {
+      onSuccess: () => {
+        reset();
+        onCreateSuccess?.();
+        setShow(false);
 
-      if (error) {
-        toast.error(error.message);
-        return;
-      }
-
-      onCreateSuccess?.();
-
-      toast.success('Organization created');
-      setShow(false);
-      reset();
-    } catch (err: any) {
-      console.log('err =>', err);
-
-      toast.error(err.message);
-    } finally {
-      setIsPending(false);
-    }
+        toast.success('Organization created.');
+      },
+      onError: (err) => {
+        console.log('err =>', err);
+        toast.error(err.message);
+      },
+    });
   };
 
   return (
     <Dialog open={show} onOpenChange={setShow}>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle>Add Organization</DialogTitle>
+          <DialogTitle>Create Organization</DialogTitle>
           <DialogDescription className='sr-only'>
-            add organization form
+            create organization form
           </DialogDescription>
         </DialogHeader>
         <FormProvider {...methods}>
@@ -92,11 +75,14 @@ export function CreateOrgDialog({
           >
             <InputText control={control} name='name' mandatory />
 
-            <InputText control={control} name='slug' mandatory />
-
             <DialogFooter>
-              <Button type='submit' disabled={isPending}>
-                {isPending ? 'Submitting...' : 'Submit'}
+              <Button
+                type='submit'
+                disabled={createOrganizationMutation.isPending}
+              >
+                {createOrganizationMutation.isPending
+                  ? 'Submitting...'
+                  : 'Submit'}
               </Button>
             </DialogFooter>
           </form>

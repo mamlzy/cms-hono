@@ -1,5 +1,5 @@
 import React from 'react';
-import { Option } from '@repo/shared/types';
+import type { Option } from '@repo/shared/types';
 
 import { cn } from '@/lib/utils';
 import InputTextBasic from '@/components/inputs/basic/input-text-basic';

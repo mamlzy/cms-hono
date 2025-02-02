@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { lowerCase, startCase } from '@repo/shared/lib/utils';
-import {
+import type {
   Control,
   ControllerRenderProps,
   FieldValues,
@@ -29,10 +29,10 @@ type Props<T extends FieldValues> =
     mandatory?: boolean;
     uppercase?: boolean;
     withLabel?: boolean;
-    containerCN?: string;
-    labelCN?: string;
+    containerClassName?: string;
+    labelClassName?: string;
     inputWrapperCN?: string;
-    inputCN?: string;
+    inputClassName?: string;
     noErrorMessage?: boolean;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -47,10 +47,10 @@ export function InputText<T extends FieldValues>({
   mandatory,
   uppercase = false,
   withLabel = true,
-  containerCN,
-  labelCN,
+  containerClassName,
+  labelClassName,
   // inputWrapperCN,
-  inputCN,
+  inputClassName,
   // noErrorMessage,
   onChange: customOnChange,
   ...props
@@ -78,9 +78,9 @@ export function InputText<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className={cn(containerCN)}>
+        <FormItem className={cn(containerClassName)}>
           {withLabel && (
-            <FormLabel className={cn('', labelCN)}>
+            <FormLabel className={cn('', labelClassName)}>
               {label || startCase(name)}
               {mandatory && <span className='text-[#f00]'>*</span>}
             </FormLabel>
@@ -97,7 +97,7 @@ export function InputText<T extends FieldValues>({
               }
               {...props}
               {...field}
-              className={cn(inputCN)}
+              className={cn(inputClassName)}
               onChange={(e) => onChange(e, field)}
             />
           </FormControl>
