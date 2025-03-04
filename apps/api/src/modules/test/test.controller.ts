@@ -1,10 +1,19 @@
 import path from 'path';
+import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
 import { nanoid } from 'nanoid';
+import { Resend } from 'resend';
+import { z } from 'zod';
 
 import { CWD } from '../../constants';
 import { writingFile } from '../../lib/utils';
 import type { AuthContext } from '../../types';
+
+const sendEmailSchema = z.object({
+  html: z.string().trim().nonempty(),
+});
+
+const resendClient = new Resend(process.env.RESEND_API_KEY);
 
 export const testRoutes = new Hono<AuthContext>()
   .get('/', (c) => {
@@ -31,4 +40,24 @@ export const testRoutes = new Hono<AuthContext>()
     return c.json({
       message: 'Hit',
     });
+  })
+  .post('/email', zValidator('json', sendEmailSchema), async (c) => {
+    const { html } = c.req.valid('json');
+
+    const sendArray = [
+      {
+        subject: 'Test Aja',
+        from: process.env.EMAIL_FROM!,
+        to: 'imam.test.777@gmail.com',
+        html,
+      },
+    ];
+
+    try {
+      const responses = await resendClient.batch.send(sendArray);
+
+      return Response.json(responses);
+    } catch (error) {
+      return Response.json({ error });
+    }
   });

@@ -1,13 +1,14 @@
-import { type Dispatch, type SetStateAction } from 'react';
+import { useState, type Dispatch, type SetStateAction } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { authClient } from '@repo/auth/client';
 import {
   createOrganizationSchema,
   type CreateOrganizationSchema,
 } from '@repo/shared/schemas';
 import { FormProvider, useForm } from 'react-hook-form';
+import slugify from 'slugify';
 import { toast } from 'sonner';
 
-import { useCreateOrganizationMutation } from '@/hooks/react-query/organization.query';
 import { InputText } from '@/components/inputs/rhf/input-text';
 import { Button } from '@/components/ui/button';
 import {
@@ -33,30 +34,41 @@ export function CreateOrganizationDialog({
     defaultValues: {
       name: '',
       logo: 'https://placehold.co/320x320',
-      metadata: JSON.stringify({
+      metadata: {
         primaryHexColor: '03aa4b',
-      }),
+      },
     },
     resolver: zodResolver(createOrganizationSchema),
   });
   const { control, handleSubmit, reset } = methods;
 
-  const createOrganizationMutation = useCreateOrganizationMutation();
+  const [isPending, setIsPending] = useState(false);
 
   const onSubmit = async (values: CreateOrganizationSchema) => {
-    createOrganizationMutation.mutate(values, {
-      onSuccess: () => {
-        reset();
-        onCreateSuccess?.();
-        setShow(false);
+    setIsPending(true);
 
-        toast.success('Organization created.');
+    await authClient.organization.create(
+      {
+        name: values.name,
+        slug: slugify(values.name, { lower: true }),
+        logo: values.logo,
+        metadata: values.metadata,
       },
-      onError: (err) => {
-        console.log('err =>', err);
-        toast.error(err.message);
-      },
-    });
+      {
+        onSuccess: () => {
+          reset();
+          onCreateSuccess?.();
+          setShow(false);
+          toast.success('Organization created.');
+        },
+        onError: (err) => {
+          console.log('err =>', err);
+          toast.error(err.error.message);
+        },
+      }
+    );
+
+    setIsPending(false);
   };
 
   return (
@@ -76,13 +88,8 @@ export function CreateOrganizationDialog({
             <InputText control={control} name='name' mandatory />
 
             <DialogFooter>
-              <Button
-                type='submit'
-                disabled={createOrganizationMutation.isPending}
-              >
-                {createOrganizationMutation.isPending
-                  ? 'Submitting...'
-                  : 'Submit'}
+              <Button type='submit' disabled={isPending}>
+                {isPending ? 'Submitting...' : 'Submit'}
               </Button>
             </DialogFooter>
           </form>

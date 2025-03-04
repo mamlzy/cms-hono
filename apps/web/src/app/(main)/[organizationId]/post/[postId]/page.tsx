@@ -16,7 +16,8 @@ import { toast } from 'sonner';
 import { CustomLink, useCurrentOrganizationId } from '@/lib/navigation';
 import { cn } from '@/lib/utils';
 import { InputText } from '@/components/inputs/rhf/input-text';
-import { MediaDialog, type MediaTab } from '@/components/media-dialog';
+import { MediaDialog } from '@/components/media-dialog/media-dialog';
+import type { MediaTab } from '@/components/media-dialog/types';
 import { InputTiptap } from '@/components/tiptap';
 import {
   Breadcrumb,
@@ -57,6 +58,10 @@ export default function Page() {
   const [selectedThumbnail, setSelectedThumbnail] = useState<Media | null>(
     null
   );
+  const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
+
+  const getThumbnailUrl = (media: Media) =>
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/media/${currentOrganizationId}${media.folderId ? `/${media.folderId}` : ''}${media.url}`;
 
   //! get post by id
   const postQuery = useQuery({
@@ -121,6 +126,10 @@ export default function Page() {
 
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('organizationId', currentOrganizationId);
+    if (selectedFolderId) {
+      formData.append('folderId', selectedFolderId);
+    }
 
     toast.promise(uploadMediaMutation.mutateAsync(formData), {
       loading: 'Uploading...',
@@ -160,6 +169,8 @@ export default function Page() {
       {
         onSuccess: () => {
           qc.invalidateQueries({ queryKey: ['posts'] });
+          qc.invalidateQueries({ queryKey: ['medias'] });
+
           toast.success(`Post updated.`);
         },
         onError: (err) => {
@@ -171,21 +182,19 @@ export default function Page() {
 
   return (
     <>
-      <div>
-        <Breadcrumb>
-          <BreadcrumbList className='sm:gap-2'>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <CustomLink href='/post'>Posts</CustomLink>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator>/</BreadcrumbSeparator>
-            <BreadcrumbItem>
-              <BreadcrumbPage>Edit</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
+      <Breadcrumb className='mb-4'>
+        <BreadcrumbList className='sm:gap-2'>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <CustomLink href='/post'>Posts</CustomLink>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator>/</BreadcrumbSeparator>
+          <BreadcrumbItem>
+            <BreadcrumbPage>Edit</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
       {postQuery.isPending && (
         <div>
@@ -244,7 +253,7 @@ export default function Page() {
                     className='flex aspect-video w-full items-center justify-center rounded-xl border bg-accent text-accent-foreground'
                     style={{
                       background: selectedThumbnail
-                        ? `url(${process.env.NEXT_PUBLIC_API_BASE_URL}/media${selectedThumbnail.url}) center / cover no-repeat`
+                        ? `url(${getThumbnailUrl(selectedThumbnail)}) center / cover no-repeat`
                         : undefined,
                     }}
                   >
@@ -274,6 +283,8 @@ export default function Page() {
         tabValue={tabValue}
         onTabValueChange={setTabValue}
         uploadDisabled={uploadMediaMutation.isPending}
+        selectedFolderId={selectedFolderId}
+        setSelectedFolderId={setSelectedFolderId}
       />
     </>
   );

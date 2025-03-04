@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <SidebarInset>
         <Topbar />
 
-        <div className='mx-auto flex w-full max-w-[1100px] flex-1 flex-col gap-4 p-4'>
+        <div className='over mx-auto flex w-full max-w-[1100px] flex-col p-4'>
           {children}
         </div>
       </SidebarInset>

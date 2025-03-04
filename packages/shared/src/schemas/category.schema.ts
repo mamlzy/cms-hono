@@ -11,7 +11,7 @@ export type CreateCategorySchema = z.infer<typeof createCategorySchema>;
 export const updateCategorySchema = createCategorySchema;
 export type UpdateCategorySchema = z.infer<typeof updateCategorySchema>;
 
-export const queryCategorySchema = z
+export const qsCategorySchema = z
   .object({
     organizationId: z.string().trim().optional(),
     title: z.string().trim().optional(),
@@ -19,4 +19,4 @@ export const queryCategorySchema = z
   .merge(pageAndLimitSchema)
   .optional()
   .default({});
-export type QueryCategorySchema = z.infer<typeof queryCategorySchema>;
+export type QsCategorySchema = z.infer<typeof qsCategorySchema>;

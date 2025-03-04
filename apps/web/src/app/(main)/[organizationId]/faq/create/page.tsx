@@ -65,21 +65,19 @@ export default function Page() {
 
   return (
     <>
-      <div>
-        <Breadcrumb>
-          <BreadcrumbList className='sm:gap-2'>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <CustomLink href='/faq'>Faqs</CustomLink>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator>/</BreadcrumbSeparator>
-            <BreadcrumbItem>
-              <BreadcrumbPage>New</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
+      <Breadcrumb className='mb-4'>
+        <BreadcrumbList className='sm:gap-2'>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <CustomLink href='/faq'>Faqs</CustomLink>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator>/</BreadcrumbSeparator>
+          <BreadcrumbItem>
+            <BreadcrumbPage>New</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
       <FormProvider {...methods}>
         <form

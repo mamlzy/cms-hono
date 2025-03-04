@@ -13,8 +13,5 @@ export type PaginationRes = {
 };
 
 export type Res<TData> = {
-  status?: string;
-  code?: number;
-  error: Error;
   data: TData;
 } & (TData extends Array<any> ? { pagination?: PaginationRes } : {});

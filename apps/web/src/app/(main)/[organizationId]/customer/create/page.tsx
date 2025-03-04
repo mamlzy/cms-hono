@@ -18,7 +18,8 @@ import { toast } from 'sonner';
 import { CustomLink, useCurrentOrganizationId } from '@/lib/navigation';
 import { cn } from '@/lib/utils';
 import { InputText } from '@/components/inputs/rhf/input-text';
-import { MediaDialog, type MediaTab } from '@/components/media-dialog';
+import { MediaDialog } from '@/components/media-dialog/media-dialog';
+import type { MediaTab } from '@/components/media-dialog/types';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -54,6 +55,7 @@ export default function Page() {
   const [selectedThumbnail, setSelectedThumbnail] = useState<Media | null>(
     null
   );
+  const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
 
   //! watch currentOrganizationId
   useEffect(() => {
@@ -101,6 +103,10 @@ export default function Page() {
 
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('organizationId', currentOrganizationId);
+    if (selectedFolderId) {
+      formData.append('folderId', selectedFolderId);
+    }
 
     toast.promise(uploadMediaMutation.mutateAsync(formData), {
       loading: 'Uploading...',
@@ -154,21 +160,19 @@ export default function Page() {
 
   return (
     <>
-      <div>
-        <Breadcrumb>
-          <BreadcrumbList className='sm:gap-2'>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <CustomLink href='/customer'>Customers</CustomLink>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator>/</BreadcrumbSeparator>
-            <BreadcrumbItem>
-              <BreadcrumbPage>New</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
+      <Breadcrumb className='mb-4'>
+        <BreadcrumbList className='sm:gap-2'>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <CustomLink href='/customer'>Customers</CustomLink>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator>/</BreadcrumbSeparator>
+          <BreadcrumbItem>
+            <BreadcrumbPage>New</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
       <div className='flex items-start gap-x-8'>
         <FormProvider {...methods}>
@@ -234,6 +238,8 @@ export default function Page() {
         tabValue={tabValue}
         onTabValueChange={setTabValue}
         uploadDisabled={uploadMediaMutation.isPending}
+        selectedFolderId={selectedFolderId}
+        setSelectedFolderId={setSelectedFolderId}
       />
     </>
   );

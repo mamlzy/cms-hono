@@ -7,7 +7,7 @@ FROM node:22.12.0-alpine AS alpine
 FROM alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+RUN corepack enable && npm install -g corepack@latest
 
 FROM base AS builder
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
@@ -50,11 +50,15 @@ WORKDIR /app
 ENV NODE_ENV production
 # ENV ENV_PATH /apps/api/.env
 
+# Copy the .env.production file into the Docker image
+COPY /apps/api/.env.production /app/apps/api/.env.production
+
 # Don't run production as root
 # TODO: don't use root user 
 # RUN addgroup --system --gid 1001 expressjs
 # RUN adduser --system --uid 1001 expressjs
 # USER expressjs
+
 COPY --from=installer /app .
 
-CMD node apps/api/dist/src/index.js
+CMD node apps/api/dist/index.js

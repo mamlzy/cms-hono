@@ -9,5 +9,5 @@ export type Nullable<T> = {
 export type ToQueryString<T> = {
   [K in keyof T]?: T[K] extends object
     ? ToQueryString<T[K]> // Recursively handle nested objects
-    : string | string[] | undefined;
+    : string | undefined;
 };

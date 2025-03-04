@@ -1,6 +1,6 @@
 import {
   type CreateCategorySchema,
-  type QueryCategorySchema,
+  type QsCategorySchema,
   type UpdateCategorySchema,
 } from '@repo/shared/schemas';
 import type { ToQueryString } from '@repo/shared/types';
@@ -21,7 +21,7 @@ const create = async (category: CreateCategorySchema) => {
   return data.data;
 };
 
-const getAll = async (queryString?: ToQueryString<QueryCategorySchema>) => {
+const getAll = async (queryString?: ToQueryString<QsCategorySchema>) => {
   const res = await hcs.api.categories.$get({
     query: queryString,
   });

@@ -3,13 +3,10 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { authClient } from '@repo/auth/client';
 import { PlusIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
-import {
-  useListOrganizations,
-  useSetActiveOrganizationMutation,
-} from '@/hooks/react-query/organization.query';
 import { CreateOrganizationDialog } from '@/components/create-org-dialog';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -17,25 +14,26 @@ import { Skeleton } from '@/components/ui/skeleton';
 export default function Page() {
   const router = useRouter();
 
-  const { data: organizations, isPending } = useListOrganizations();
+  const { data: organizations, isPending } = authClient.useListOrganizations();
 
   const [showCreateOrganizationDialog, setShowCreateOrganizationDialog] =
     useState(false);
-
-  const setActiveOrganizationMutation = useSetActiveOrganizationMutation();
 
   const handleSelectOrg = async (
     e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>,
     organizationId: string
   ) => {
-    setActiveOrganizationMutation.mutate(
-      { organizationId },
+    await authClient.organization.setActive(
+      {
+        organizationId,
+      },
       {
         onSuccess: () => {
           router.push(`${organizationId}/dashboard`);
         },
         onError: (err) => {
-          toast.error(err.message);
+          console.log('err =>', err);
+          toast.error(err.error.message);
         },
       }
     );

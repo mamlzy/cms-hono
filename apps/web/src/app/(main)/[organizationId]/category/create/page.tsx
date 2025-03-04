@@ -32,7 +32,7 @@ export default function Page() {
     },
     resolver: zodResolver(createCategorySchema),
   });
-  const { control, handleSubmit, reset, setValue } = methods;
+  const { control, handleSubmit, resetField, setValue } = methods;
 
   const qc = useQueryClient();
   const currentOrganizationId = useCurrentOrganizationId();
@@ -55,7 +55,7 @@ export default function Page() {
       onSuccess: () => {
         qc.invalidateQueries({ queryKey: ['categories'] });
         toast.success(`Category created.`);
-        reset();
+        resetField('title');
       },
       onError: (err) => {
         console.log('err =>', err);
@@ -66,21 +66,19 @@ export default function Page() {
 
   return (
     <>
-      <div>
-        <Breadcrumb>
-          <BreadcrumbList className='sm:gap-2'>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <CustomLink href='/category'>Categories</CustomLink>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator>/</BreadcrumbSeparator>
-            <BreadcrumbItem>
-              <BreadcrumbPage>New</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
+      <Breadcrumb className='mb-4'>
+        <BreadcrumbList className='sm:gap-2'>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <CustomLink href='/category'>Categories</CustomLink>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator>/</BreadcrumbSeparator>
+          <BreadcrumbItem>
+            <BreadcrumbPage>New</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
       <FormProvider {...methods}>
         <form

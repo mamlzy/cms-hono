@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "type": "module",
   "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "default": "./dist/index.js"
+    "./client": {
+      "types": "./src/auth-client.ts",
+      "default": "./dist/auth-client.js"
     },
     "./server": {
-      "types": "./src/server/index.ts",
-      "default": "./dist/server/index.js"
+      "types": "./src/auth-server.ts",
+      "default": "./dist/auth-server.js"
     }
   },
   "scripts": {
@@ -21,14 +21,15 @@
     "clean": "rimraf .turbo node_modules dist"
   },
   "dependencies": {
-    "@repo/db": "workspace:*",
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
-    "hono": "4.6.16"
+    "@repo/db": "workspace:*",
+    "better-auth": "1.2.2",
+    "hono": "4.6.16",
+    "nanostores": "^0.11.4"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
-    "eslint": "^8",
-    "tsup": "^8.3.0"
+    "eslint": "^8"
   }
 }

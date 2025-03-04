@@ -6,7 +6,7 @@ import {
   type CategoryGetAll,
 } from '@/requests/category.request';
 import { useDebouncedValue } from '@mantine/hooks';
-import type { QueryCategorySchema } from '@repo/shared/schemas';
+import type { QsCategorySchema } from '@repo/shared/schemas';
 import type { Option, ToQueryString } from '@repo/shared/types';
 import {
   keepPreviousData,
@@ -155,7 +155,7 @@ const columns = [
 ];
 
 const searchByOptions = [{ value: 'title', label: 'Title' }] satisfies Option<
-  keyof QueryCategorySchema
+  keyof QsCategorySchema
 >[];
 
 export default function Page() {
@@ -177,7 +177,7 @@ export default function Page() {
     [pageIndex, pageSize]
   );
 
-  const query: ToQueryString<QueryCategorySchema> = {
+  const query: ToQueryString<QsCategorySchema> = {
     page: (pageIndex + 1).toString(),
     limit: pageSize.toString(),
     organizationId: currentOrganizationId,

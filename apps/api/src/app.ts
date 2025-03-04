@@ -1,5 +1,5 @@
 import { serveStatic } from '@hono/node-server/serve-static';
-import { getSessionToken, validateSessionToken } from '@repo/auth';
+import { auth } from '@repo/auth/server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
@@ -27,31 +27,22 @@ app.use(
   })
 );
 
-//! auth middldeware
-app.use('/api/*', async (c, next) => {
-  const sessionToken = getSessionToken(c);
+//! auth middleware
+app.use('*', async (c, next) => {
+  const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
-  if (!sessionToken) {
+  if (!session) {
     c.set('user', null);
     c.set('session', null);
-
-    return next();
-  }
-
-  const session = await validateSessionToken(sessionToken);
-
-  if (!session.session || !session.user) {
-    c.set('user', null);
-    c.set('session', null);
-
     return next();
   }
 
   c.set('user', session.user);
   c.set('session', session.session);
-
   return next();
 });
+
+app.on(['POST', 'GET'], '/api/auth/**', (c) => auth.handler(c.req.raw));
 
 const routes = createRoutes(app);
 

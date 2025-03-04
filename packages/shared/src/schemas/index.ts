@@ -4,3 +4,5 @@ export * from './organization.schema';
 export * from './post.schema';
 export * from './faq.schema';
 export * from './customer.schema';
+export * from './folder.schema';
+export * from './media.schema';

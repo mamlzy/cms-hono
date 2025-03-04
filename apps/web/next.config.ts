@@ -6,8 +6,12 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { hostname: 'localhost' },
+      { protocol: 'https', hostname: 'api.cms.neelo.id' },
       { protocol: 'https', hostname: 'placehold.co' },
     ],
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {

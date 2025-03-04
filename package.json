@@ -12,6 +12,7 @@
     "typecheck": "turbo typecheck"
   },
   "dependencies": {
+    "tsup": "^8.4.0",
     "zod": "3.24.1"
   },
   "devDependencies": {
@@ -23,7 +24,7 @@
     "eslint": "^8",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
-    "turbo": "2.4.0",
+    "turbo": "2.4.4",
     "typescript": "^5.7.2"
   },
   "packageManager": "pnpm@9.10.0"

@@ -4,7 +4,7 @@ import { categoryTable } from '@repo/db/schema';
 import { createPagination } from '@repo/shared/lib/utils';
 import {
   createCategorySchema,
-  queryCategorySchema,
+  qsCategorySchema,
   updateCategorySchema,
 } from '@repo/shared/schemas';
 import { Hono } from 'hono';
@@ -57,7 +57,7 @@ export const categoryRoutes = new Hono<AuthContext>()
     );
   })
   //! get all
-  .get('/', zValidator('query', queryCategorySchema), async (c) => {
+  .get('/', zValidator('query', qsCategorySchema), async (c) => {
     const user = c.get('user');
 
     if (!user) {

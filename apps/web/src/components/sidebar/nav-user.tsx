@@ -1,11 +1,10 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { authClient } from '@repo/auth/client';
 import { BadgeCheckIcon, ChevronsUpDownIcon, LogOutIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
-import { useLogoutMutation } from '@/hooks/react-query/auth.query';
-import { useSession } from '@/hooks/use-session';
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -27,7 +26,7 @@ import { Switch } from '@/components/ui/switch';
 
 export function NavUser() {
   const router = useRouter();
-  const session = useSession();
+  const { data: session } = authClient.useSession();
   const { isMobile } = useSidebar();
   const { theme, setTheme } = useTheme();
 
@@ -35,12 +34,12 @@ export function NavUser() {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
-  const logoutMutation = useLogoutMutation();
-
   const handleSignOut = async () => {
-    logoutMutation.mutate(undefined, {
-      onSuccess: () => {
-        router.push('/login');
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push('/login');
+        },
       },
     });
   };

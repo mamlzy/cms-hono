@@ -3,7 +3,8 @@ import {
   categoryRequest,
   type CategoryGetAll,
 } from '@/requests/category.request';
-import type { CreatePostSchema } from '@repo/shared/schemas';
+import type { CreatePostSchema, QsCategorySchema } from '@repo/shared/schemas';
+import type { ToQueryString } from '@repo/shared/types';
 import { useQuery } from '@tanstack/react-query';
 import { BoxIcon, CheckIcon, PlusIcon, Trash2Icon } from 'lucide-react';
 import {
@@ -14,6 +15,7 @@ import {
   type Path,
 } from 'react-hook-form';
 
+import { useCurrentOrganizationId } from '@/lib/navigation';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
@@ -49,6 +51,8 @@ export function InputCategory<T extends FieldValues>({
   });
   const { setValue } = useFormContext<T>();
 
+  const currentOrganizationId = useCurrentOrganizationId();
+
   const [showSheet, setShowSheet] = useState(false);
   const [tempCategories, setTempCategories] = useState<TCategory[]>([]);
 
@@ -57,9 +61,12 @@ export function InputCategory<T extends FieldValues>({
     setTempCategories(field.value);
   }, [field.value, showSheet]);
 
+  const categoriesQs: ToQueryString<QsCategorySchema> = {
+    organizationId: currentOrganizationId,
+  };
   const categoriesQuery = useQuery({
-    queryKey: ['categories'],
-    queryFn: () => categoryRequest.getAll(),
+    queryKey: ['categories', categoriesQs],
+    queryFn: () => categoryRequest.getAll(categoriesQs),
   });
 
   const handleSelect = (category: CategoryGetAll) => {

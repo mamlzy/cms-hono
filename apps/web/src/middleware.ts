@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { betterFetch } from '@better-fetch/fetch';
-import type { SessionValidationResult } from '@repo/auth';
+import type { Session } from '@repo/auth/server';
 import type { Organization } from '@repo/db/schema';
 
 export async function middleware(req: NextRequest) {
@@ -10,7 +10,7 @@ export async function middleware(req: NextRequest) {
 
   const { pathname: fullPathname } = req.nextUrl;
 
-  let session: SessionValidationResult | null = null;
+  let session: Session | null = null;
   const authRoutes = ['/login'];
   const publicRoutes = ['/test'];
 
@@ -20,14 +20,16 @@ export async function middleware(req: NextRequest) {
   const isOrgRoute = fullPathname === '/organization';
 
   try {
-    const { data: sessionResponse, error } =
-      await betterFetch<SessionValidationResult>('/api/auth/get-session', {
+    const { data: sessionResponse, error } = await betterFetch<Session>(
+      '/api/auth/get-session',
+      {
         baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
         headers: {
           // get the cookie from the request
           cookie: req.headers.get('cookie') || '',
         },
-      });
+      }
+    );
 
     if (!error) {
       session = sessionResponse;

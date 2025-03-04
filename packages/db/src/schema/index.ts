@@ -11,3 +11,4 @@ export * from './post-to-category';
 export * from './media';
 export * from './faq';
 export * from './customer';
+export * from './folder';

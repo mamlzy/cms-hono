@@ -5,7 +5,11 @@ import { requiredStringSchema } from '../lib/zod';
 export const createOrganizationSchema = z.strictObject({
   name: requiredStringSchema,
   logo: requiredStringSchema,
-  metadata: z.string().trim().nullable(),
+  metadata: z
+    .object({
+      primaryHexColor: requiredStringSchema,
+    })
+    .optional(),
 });
 
 export type CreateOrganizationSchema = z.infer<typeof createOrganizationSchema>;

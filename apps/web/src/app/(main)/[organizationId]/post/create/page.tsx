@@ -15,7 +15,8 @@ import { toast } from 'sonner';
 import { CustomLink, useCurrentOrganizationId } from '@/lib/navigation';
 import { cn } from '@/lib/utils';
 import { InputText } from '@/components/inputs/rhf/input-text';
-import { MediaDialog, type MediaTab } from '@/components/media-dialog';
+import { MediaDialog } from '@/components/media-dialog/media-dialog';
+import type { MediaTab } from '@/components/media-dialog/types';
 import { InputTiptap } from '@/components/tiptap';
 import {
   Breadcrumb,
@@ -56,6 +57,10 @@ export default function Page() {
   const [selectedThumbnail, setSelectedThumbnail] = useState<Media | null>(
     null
   );
+  const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
+
+  const getThumbnailUrl = (media: Media) =>
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/media/${currentOrganizationId}${media.folderId ? `/${media.folderId}` : ''}${media.url}`;
 
   //! watch currentOrganizationId
   useEffect(() => {
@@ -103,6 +108,10 @@ export default function Page() {
 
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('organizationId', currentOrganizationId);
+    if (selectedFolderId) {
+      formData.append('folderId', selectedFolderId);
+    }
 
     toast.promise(uploadMediaMutation.mutateAsync(formData), {
       loading: 'Uploading...',
@@ -156,21 +165,19 @@ export default function Page() {
 
   return (
     <>
-      <div>
-        <Breadcrumb>
-          <BreadcrumbList className='sm:gap-2'>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <CustomLink href='/post'>Posts</CustomLink>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator>/</BreadcrumbSeparator>
-            <BreadcrumbItem>
-              <BreadcrumbPage>New</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
+      <Breadcrumb className='mb-4'>
+        <BreadcrumbList className='sm:gap-2'>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <CustomLink href='/post'>Posts</CustomLink>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator>/</BreadcrumbSeparator>
+          <BreadcrumbItem>
+            <BreadcrumbPage>New</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
       <div className='flex items-start gap-x-8'>
         <FormProvider {...methods}>
@@ -223,7 +230,7 @@ export default function Page() {
                   className='flex aspect-video w-full items-center justify-center rounded-xl border bg-slate-200 hover:bg-slate-200/80 dark:bg-slate-400 dark:text-black dark:hover:bg-slate-400/80'
                   style={{
                     background: selectedThumbnail
-                      ? `url(${process.env.NEXT_PUBLIC_API_BASE_URL}/media${selectedThumbnail.url}) center / cover no-repeat`
+                      ? `url(${getThumbnailUrl(selectedThumbnail)}) center / cover no-repeat`
                       : undefined,
                   }}
                 >
@@ -252,6 +259,8 @@ export default function Page() {
         tabValue={tabValue}
         onTabValueChange={setTabValue}
         uploadDisabled={uploadMediaMutation.isPending}
+        selectedFolderId={selectedFolderId}
+        setSelectedFolderId={setSelectedFolderId}
       />
     </>
   );

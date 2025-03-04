@@ -10,7 +10,9 @@ import { SidebarTrigger } from '../sidebar/ui/sidebar';
 export function Topbar() {
   const pathname = useCustomPathname();
 
-  const isActive = pathname === '/media';
+  // Match /media or /media/folder/[folderId] but not deeper paths
+  const isActive =
+    pathname === '/media' || /^\/media\/folder\/[^/]+$/.test(pathname);
 
   return (
     <header className='flex h-14 shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12'>

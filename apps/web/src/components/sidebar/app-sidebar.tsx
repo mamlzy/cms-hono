@@ -4,9 +4,9 @@ import * as React from 'react';
 import Link from 'next/link';
 import { ChevronRightIcon, FolderIcon, type LucideIcon } from 'lucide-react';
 
-import { useActiveOrganization } from '@/hooks/react-query/organization.query';
+import { useCurrentOrganizationId } from '@/lib/navigation';
 import { NavUser } from '@/components/sidebar/nav-user';
-import { OrganizationSwitcher } from '@/components/sidebar/team-switcher';
+import { OrganizationSwitcher } from '@/components/sidebar/organization-switcher';
 import {
   Sidebar,
   SidebarContent,
@@ -41,6 +41,7 @@ const sidebarData = {
     { title: 'Post', href: '/post', icon: '📝' },
     { title: 'Faq', href: '/faq', icon: '🤔' },
     { title: 'Customer', href: '/customer', icon: '🤝' },
+    { title: 'Email', href: '/email', icon: '✉️' },
     // {
     //   title: 'ux',
     //   icon: FolderIcon,
@@ -79,9 +80,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 }
 
 function Tree({ item }: { item: SidebarNode }) {
-  const { data: activeOrganization } = useActiveOrganization();
+  const currentOrganizationId = useCurrentOrganizationId();
 
-  if (!activeOrganization) return null;
+  if (!currentOrganizationId) return null;
 
   if (item.items && item.items?.length > 0) {
     // render a dropdown with nested items
@@ -116,7 +117,7 @@ function Tree({ item }: { item: SidebarNode }) {
     return (
       <SidebarMenuButton asChild>
         <Link
-          href={`/${activeOrganization.id}${item.href}`}
+          href={`/${currentOrganizationId}${item.href}`}
           className='data-[active=true]:bg-transparent'
         >
           {item.icon &&

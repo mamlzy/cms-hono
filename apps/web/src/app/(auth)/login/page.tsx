@@ -2,10 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { authRequest } from '@/requests/auth.request';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
+import { authClient } from '@repo/auth/client';
 import { AlertCircleIcon, Moon, Sun, WebhookIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useForm, type SubmitHandler } from 'react-hook-form';
@@ -46,37 +44,28 @@ export default function Page() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
 
-  const loginMutation = useMutation({
-    mutationFn: authRequest.login,
-  });
-
   const onSubmit: SubmitHandler<z.infer<typeof loginSchema>> = async (
     values
   ) => {
     setIsPending(true);
     setErrorMessage(null);
 
-    loginMutation.mutate(
-      {
+    try {
+      const { error } = await authClient.signIn.username({
         username: values.username,
         password: values.password,
-      },
-      {
-        onSuccess: () => {
-          router.replace('/organization');
-        },
-        onError: (err) => {
-          console.log('err =>', err);
+      });
 
-          if (err instanceof AxiosError) {
-            toast.error(err.response?.data);
-            return;
-          }
-
-          toast.error(err.message);
-        },
+      if (error) {
+        toast.error(error.message);
       }
-    );
+
+      router.replace('/organization');
+    } catch (err: any) {
+      console.log('err =>', err);
+
+      toast.error(err.message);
+    }
 
     setIsPending(false);
   };
@@ -100,7 +89,6 @@ export default function Page() {
         </span>{' '}
       </div>
 
-      {/* <h2 className='mb-8 text-5xl font-bold'>Welcome Back</h2> */}
       <p className='relative z-20 from-neutral-200 to-neutral-500 bg-clip-text py-8 text-4xl font-bold dark:bg-gradient-to-b dark:text-transparent sm:text-5xl'>
         Welcome back
       </p>

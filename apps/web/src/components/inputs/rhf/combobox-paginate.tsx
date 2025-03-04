@@ -44,7 +44,8 @@ type Props<
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   optionValue: TOptionValue;
-  optionLabel: TOptionLabel;
+  // optionLabel: TOptionLabel;
+  optionLabel: keyof TData | ((option: TData) => string | boolean);
   name: Path<TField>;
   id?: string;
   label?: string;
@@ -85,15 +86,21 @@ export default function ComboboxPaginate<
   getSingleFn,
 }: Props<TField, TData, TOptionValue, TOptionLabel>) {
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<
-    Awaited<ReturnType<typeof getSingleFn>>['data'] | null
-  >(null);
+  const [selected, setSelected] = useState<TData | null>(null);
   const [isPending, setIsPending] = useState(false);
 
   const options = useMemo(
     () => query.data?.pages.flatMap((page) => page.data) || [],
     [query.data]
   );
+
+  const getOptionLabel = useMemo(() => {
+    if (!selected) return 'unknown';
+
+    return typeof optionLabel === 'function'
+      ? optionLabel(selected)
+      : selected[optionLabel];
+  }, [selected, optionLabel]);
 
   const {
     field,
@@ -107,8 +114,9 @@ export default function ComboboxPaginate<
 
     try {
       const { data } = await getSingleFn(value);
+      console.log({ data });
 
-      setSelected(data);
+      setSelected(data as TData);
     } catch (err) {
       console.error('err =>', err);
       toast.error(`Error, Cant get ${` ${label || placeholder}`} data`);
@@ -201,7 +209,7 @@ export default function ComboboxPaginate<
               )}
             >
               {selected
-                ? selected[optionLabel]
+                ? getOptionLabel
                 : placeholder ||
                   label ||
                   (name ? `Select ${lowerCase(name)}...` : undefined)}
@@ -295,7 +303,7 @@ export default function ComboboxPaginate<
                       )}
                     />
                     <span className='text-sm leading-none'>
-                      {option[optionLabel]}
+                      {getOptionLabel}
                     </span>
                   </div>
                 );

@@ -5,7 +5,7 @@ FROM node:22.12.0-alpine AS alpine
 FROM alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+RUN corepack enable && npm install -g corepack@latest
 
 FROM base AS builder
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
@@ -31,6 +31,7 @@ COPY --from=builder ./app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=builder ./app/out/pnpm-workspace.yaml ./pnpm-workspace.yaml
 
 ENV NEXT_TELEMETRY_DISABLED 1
+
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 # Build the project
@@ -43,6 +44,9 @@ COPY turbo.json turbo.json
 
 # ARG TURBO_TOKEN
 # ENV TURBO_TOKEN=$TURBO_TOKEN
+
+# Copy the .env.production file into the Docker image
+COPY /apps/web/.env.production /app/apps/web/.env.production
 
 RUN pnpm turbo run build --filter=web...
 

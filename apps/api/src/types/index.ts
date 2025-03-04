@@ -1,8 +1,8 @@
-import type { Session, User } from '@repo/db/schema';
+import { auth } from '@repo/auth/server';
 
 export type AuthContext = {
   Variables: {
-    user: User | null;
-    session: Session | null;
+    user: typeof auth.$Infer.Session.user | null;
+    session: typeof auth.$Infer.Session.session | null;
   };
 };

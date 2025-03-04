@@ -1,25 +1,14 @@
-// import { assertAuthenticated } from '@/lib/session';
-
-// export default async function Page() {
-//   const user = await assertAuthenticated();
-
-//   console.log('user =>', user);
-
-//   return <div>Test</div>;
-// }
-
 'use client';
 
 import Link from 'next/link';
-
-import { useSession } from '@/hooks/use-session';
+import { authClient } from '@repo/auth/client';
 
 export default function Page() {
-  const session = useSession();
+  const { data: session } = authClient.useSession();
 
   return (
     <div>
-      <p>Name: {session.user?.name}</p>
+      <p>Name: {session?.user.name}</p>
       <Link href='/test/2'>Test 2 Page</Link>
     </div>
   );
